@@ -73,7 +73,7 @@ class MyDocument extends Document {
 
         {/* Reservoir Meta Tags: https://docs.reservoir.tools/docs/reservoir-meta-tags */}
         <meta property="reservoir:title" content="Fellowship Marketplace" />
-        <meta property="reservoir:icon" content="/reservoir-source-icon.png" />
+        <meta property="reservoir:icon" content="/favicon.png" />
         <meta
           property="reservoir:token-url-mainnet"
           content="/collection/ethereum/${contract}/${tokenId}"
