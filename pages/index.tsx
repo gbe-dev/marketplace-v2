@@ -28,7 +28,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
   const marketplaceChain = useMarketplaceChain()
 
   let collectionQuery: Parameters<typeof useCollections>['0'] = {
-    limit: 30,
+    limit: 12,
     sortBy: sortByTime,
   }
 
@@ -44,9 +44,9 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
     })
 
   let collections = data || []
-  const showViewAllButton = collections.length <= 30 && hasNextPage
+  const showViewAllButton = collections.length <= 12 && hasNextPage
   if (showViewAllButton) {
-    collections = collections?.slice(0, 30)
+    collections = collections?.slice(0, 12)
   }
 
   const [sentryRef] = useInfiniteScroll({
@@ -158,7 +158,7 @@ export const getStaticProps: GetStaticProps<{
     {
       sortBy: 'allTimeVolume',
       normalizeRoyalties: NORMALIZE_ROYALTIES,
-      limit: 30,
+      limit: 12,
     }
 
   if (COLLECTION_SET_ID) {
