@@ -45,10 +45,10 @@ const IndexPage: NextPage = () => {
     collectionQuery
   )
 
-  /*if (!isMounted) {
+  if (!isMounted) {
     return null
   }
-*/
+
   return (
     <Layout>
       <Flex
