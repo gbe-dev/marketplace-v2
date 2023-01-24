@@ -123,7 +123,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
           )}
           {showViewAllButton && (
             <Button
-              disabled={isValidating}
+             // disabled={isValidating}
               onClick={() => {
                 fetchNextPage()
               }}
