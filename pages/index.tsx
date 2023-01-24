@@ -24,11 +24,11 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
   const isMounted = useMounted()
   const compactToggleNames = useMediaQuery({ query: '(max-width: 800px)' })
   const [sortByTime, setSortByTime] =
-    useState<CollectionsSortingOption>('allTime')
+    useState<CollectionsSortingOption>('')
   const marketplaceChain = useMarketplaceChain()
 
   let collectionQuery: Parameters<typeof useCollections>['0'] = {
-    limit: 12,
+    limit: 30,
     sortBy: sortByTime,
   }
 
