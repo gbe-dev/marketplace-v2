@@ -29,7 +29,7 @@ export const TrendingCollectionItem: FC<Props> = ({
         </Text>
         <img
           src={collection?.image}
-          style={{ borderRadius: 8, width: 90, height: 90, objectFit: 'cover' }}
+          style={{ borderRadius: 2, width: 90, height: 90, objectFit: 'cover' }}
         />
         <Box css={{ ml: '$4', width: '100%', minWidth: 0 }}>
           <Flex align="center" css={{ gap: '$2', mb: 4, maxWidth: '80%' }}>
