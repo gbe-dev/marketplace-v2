@@ -28,9 +28,8 @@ class MyDocument extends Document {
         <meta name="keywords" content="nft, ethereum, protocol" />
         <link
           rel="shortcut icon"
-          type="image/svg"
+          type="image/png"
           href="/favicon.png"
-          href="https://marketplace.reservoir.tools/reservoir.svg"
         />
         <title>Fellowship / Marketplace</title>
         <meta
