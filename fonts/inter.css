@@ -150,3 +150,23 @@
   src: url('/fonts/inter/Inter-BlackItalic.woff2?v=3.19') format('woff2'),
     url('/fonts/inter/Inter-BlackItalic.woff?v=3.19') format('woff');
 }
+@font-face {
+  font-family: 'MonumentGrotesk';
+  src: url(../fonts/ABCMonumentGrotesk-Regular.woff2) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MonumentGrotesk';
+  src: url(../fonts/ABCMonumentGrotesk-Medium.woff2) format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MonumentGroteskSemi-Mono';
+  src: url(../fonts/ABCMonumentGroteskSemi-Mono-Regular.woff2) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

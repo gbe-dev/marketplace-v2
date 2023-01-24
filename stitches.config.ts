@@ -106,7 +106,7 @@ export const { createTheme, keyframes, styled, globalCss, getCssText } =
       fontSizes: {},
       fontWeights: {},
       fonts: {
-        body: 'Inter',
+        body: 'MonumentGrotesk',
         button: '$body',
       },
       lineHeights: {},
