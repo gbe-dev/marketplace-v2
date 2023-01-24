@@ -253,7 +253,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
             {imageSrc && (
               <Image
                 style={{
-                  borderRadius: '4px',
+                  borderRadius: '8px',
                   objectFit: 'cover',
                   aspectRatio: '1/1',
                 }}
@@ -262,6 +262,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
                 alt={`${token?.token?.name}`}
                 width={200}
                 height={200}
+                // was 48
               />
             )}
             <Flex
@@ -271,10 +272,10 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
                 overflow: 'hidden',
               }}
             >
-              <Text style="subtitle3" ellipsify color="subtle">
+              <Text style="subtitle2" ellipsify color="subtle">
                 {token?.token?.collection?.name}
               </Text>
-              <Text style="subtitle2" ellipsify>
+              <Text style="subtitle1" ellipsify>
                 #{token?.token?.tokenId}
               </Text>
             </Flex>
