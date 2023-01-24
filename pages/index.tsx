@@ -46,7 +46,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
   let collections = data || []
   const showViewAllButton = collections.length <= 30 && hasNextPage
   if (showViewAllButton) {
-    collections = collections?.slice(0, )
+    collections = collections?.slice(0, 30)
   }
 
   const [sentryRef] = useInfiniteScroll({
