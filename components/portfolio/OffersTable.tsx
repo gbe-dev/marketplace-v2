@@ -41,7 +41,7 @@ export const OffersTable: FC<Props> = ({ address }) => {
     includeCriteriaMetadata: true,
   }
 
-  if (COMMUNITY) bidsQuery.community = COMMUNITY
+  //if (COMMUNITY) bidsQuery.community = COMMUNITY
 
   const {
     data: offers,
