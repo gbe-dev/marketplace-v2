@@ -34,11 +34,11 @@ const IndexPage: NextPage = () => {
     collection: filterCollection,
   }
 
-  if (COLLECTION_SET_ID) {
+  /*if (COLLECTION_SET_ID) {
     collectionQuery.collectionsSetId = COLLECTION_SET_ID
   } else if (COMMUNITY) {
     collectionQuery.community = COMMUNITY
-  }
+  }*/
 
   const { data: collections } = useUserCollections(
     address as string,
