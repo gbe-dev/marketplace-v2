@@ -41,7 +41,7 @@ export const ListingsTable: FC<Props> = ({ address }) => {
     includeCriteriaMetadata: true,
   }
 
-  if (COMMUNITY) listingsQuery.community = COMMUNITY
+  //if (COMMUNITY) listingsQuery.community = COMMUNITY
 
   const {
     data: listings,

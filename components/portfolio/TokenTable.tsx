@@ -46,11 +46,11 @@ export const TokenTable: FC<Props> = ({ address, filterCollection }) => {
     includeTopBid: true,
   }
 
-  if (COLLECTION_SET_ID) {
+  /*if (COLLECTION_SET_ID) {
     tokenQuery.collectionsSetId = COLLECTION_SET_ID
   } else if (COMMUNITY) {
     tokenQuery.community = COMMUNITY
-  }
+  }*/
 
   const {
     data: tokens,
