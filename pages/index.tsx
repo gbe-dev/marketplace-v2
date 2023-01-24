@@ -99,7 +99,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
             }}
           >
             <Text style="h4" as="h4">
-              Popular Collections
+              Fellowship Collections
             </Text>
             <TrendingCollectionsTimeToggle
               compact={compactToggleNames && isMounted}
