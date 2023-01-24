@@ -30,6 +30,7 @@ class MyDocument extends Document {
           rel="shortcut icon"
           type="image/svg"
           href="/favicon.png"
+          href="https://marketplace.reservoir.tools/reservoir.svg"
         />
         <title>Fellowship / Marketplace</title>
         <meta
