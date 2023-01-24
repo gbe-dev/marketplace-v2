@@ -26,10 +26,11 @@ class MyDocument extends Document {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="keywords" content="nft, ethereum, protocol" />
+       
         <link
           rel="shortcut icon"
           type="image/png"
-          href="/favicon.png"
+          href="/favicon.png" 
         />
         <title>Fellowship / Marketplace</title>
         <meta
