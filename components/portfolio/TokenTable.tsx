@@ -260,8 +260,8 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
                 loader={({ src }) => src}
                 src={imageSrc}
                 alt={`${token?.token?.name}`}
-                width={48}
-                height={48}
+                width={200}
+                height={200}
               />
             )}
             <Flex
