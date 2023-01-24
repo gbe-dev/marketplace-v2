@@ -156,9 +156,9 @@ export const getStaticProps: GetStaticProps<{
 }> = async () => {
   let collectionQuery: paths['/collections/v5']['get']['parameters']['query'] =
     {
-      sortBy: '1DayVolume',
+      sortBy: 'allTimeVolume',
       normalizeRoyalties: NORMALIZE_ROYALTIES,
-      limit: 12,
+      limit: 30,
     }
 
   if (COLLECTION_SET_ID) {
