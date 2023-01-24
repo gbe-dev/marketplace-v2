@@ -60,6 +60,7 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
   const [attributeFiltersOpen, setAttributeFiltersOpen] = useState(true)
   const [activityFiltersOpen, setActivityFiltersOpen] = useState(true)
   const [activityTypes, setActivityTypes] = useState<ActivityTypes>(['sale'])
+  const [initialTokenFallbackData, setInitialTokenFallbackData] = useState(true)
   const isMounted = useMounted()
   const isSmallDevice = useMediaQuery({ maxWidth: 905 }) && isMounted
   const [playingElement, setPlayingElement] = useState<
@@ -116,14 +117,16 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
   const {
     data: tokens,
     mutate,
+    resetCache,
     fetchNextPage,
     isFetchingInitialData,
+    isFetchingPage,
     hasNextPage,
   } = useTokens(tokenQuery, {
-    fallbackData: [ssr.tokens],
+    fallbackData: initialTokenFallbackData ? [ssr.tokens] : undefined,
   })
 
-  const attributes = ssr?.attributes.attributes?.filter(
+  const attributes = ssr?.attributes?.attributes?.filter(
     (attribute) => attribute.kind != 'number' && attribute.kind != 'range'
   )
 
@@ -140,6 +143,13 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
       fetchNextPage()
     }
   }, [loadMoreObserver?.isIntersecting])
+
+  useEffect(() => {
+    resetCache()
+    if (isMounted && initialTokenFallbackData) {
+      setInitialTokenFallbackData(false)
+    }
+  }, [router.query])
 
   return (
     <Layout>
@@ -329,9 +339,10 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                           />
                         ))}
                     <Box ref={loadMoreRef}>
-                      {hasNextPage && !isFetchingInitialData && <LoadingCard />}
+                      {(hasNextPage || isFetchingPage) &&
+                        !isFetchingInitialData && <LoadingCard />}
                     </Box>
-                    {hasNextPage && (
+                    {(hasNextPage || isFetchingPage) && (
                       <>
                         {Array(10)
                           .fill(null)
@@ -416,7 +427,7 @@ export const getStaticProps: GetStaticProps<{
   ssr: {
     collection: paths['/collections/v5']['get']['responses']['200']['schema']
     tokens: paths['/tokens/v5']['get']['responses']['200']['schema']
-    attributes: paths['/collections/{collection}/attributes/all/v2']['get']['responses']['200']['schema']
+    attributes?: paths['/collections/{collection}/attributes/all/v2']['get']['responses']['200']['schema']
   }
   id: string | undefined
 }> = async ({ params }) => {
@@ -459,14 +470,17 @@ export const getStaticProps: GetStaticProps<{
   )
 
   const tokens: Props['ssr']['tokens'] = tokensResponse['data']
-
-  const attributesResponse = await fetcher(
-    `${reservoirBaseUrl}/collections/${id}/attributes/all/v2`,
-    {},
-    headers
-  )
-
-  const attributes: Props['ssr']['attributes'] = attributesResponse['data']
+  let attributes: Props['ssr']['attributes'] | undefined
+  try {
+    const attributesResponse = await fetcher(
+      `${reservoirBaseUrl}/collections/${id}/attributes/all/v2`,
+      {},
+      headers
+    )
+    attributes = attributesResponse['data']
+  } catch (e) {
+    console.log('Failed to load attributes')
+  }
 
   return {
     props: { ssr: { collection, tokens, attributes }, id },
