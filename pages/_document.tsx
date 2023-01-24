@@ -39,7 +39,7 @@ class MyDocument extends Document {
         <meta name="keywords" content="NFT, API, Protocol" />
         {/* Twitter */}
         {/* The optimal size is 1200 x 630 (1.91:1 ratio). */}
-        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image" content="/banner-01.jpeg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -64,7 +64,7 @@ class MyDocument extends Document {
           property="og:description"
           content="Fellowship champions the future of photography. We present a new way to discover, collect and learn about photography by exhibiting NFTs from marquee estates, living artists and emerging talent."
         />
-        <meta property="og:image" content={ogImage} />
+        <meta property="og:image" content="/banner-01.jpeg" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1280" />
         <meta property="og:image:height" content="640" />
