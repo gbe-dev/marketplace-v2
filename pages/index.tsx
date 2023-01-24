@@ -24,7 +24,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
   const isMounted = useMounted()
   const compactToggleNames = useMediaQuery({ query: '(max-width: 800px)' })
   const [sortByTime, setSortByTime] =
-    useState<CollectionsSortingOption>('1DayVolume')
+    useState<CollectionsSortingOption>('allTime')
   const marketplaceChain = useMarketplaceChain()
 
   let collectionQuery: Parameters<typeof useCollections>['0'] = {
@@ -44,9 +44,9 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
     })
 
   let collections = data || []
-  const showViewAllButton = collections.length <= 12 && hasNextPage
+  const showViewAllButton = collections.length <= 30 && hasNextPage
   if (showViewAllButton) {
-    collections = collections?.slice(0, 12)
+    collections = collections?.slice(0, 30)
   }
 
   const [sentryRef] = useInfiniteScroll({
