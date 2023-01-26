@@ -141,7 +141,7 @@ function MyApp({
             apiBase: `${baseUrl}${marketplaceChain.proxyApi}`,
             apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
             source: 'marketplace.fellowship.xyz',
-            marketplaceFee: 500,
+            marketplaceFee: 200,
             marketplaceFeeRecipient: '0xd7dD9612A21F7C249Fb7F33E9C2e9144345e162b',
             normalizeRoyalties: NORMALIZE_ROYALTIES,
           }}
