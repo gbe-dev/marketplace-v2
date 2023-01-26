@@ -91,13 +91,13 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
     limit: 100,
   }
 
-  if (COLLECTION_SET_ID) {
+ /* if (COLLECTION_SET_ID) {
     collectionQuery.collectionsSetId = COLLECTION_SET_ID
     tokenQuery.collectionsSetId = COLLECTION_SET_ID
   } else if (COMMUNITY) {
     collectionQuery.community = COMMUNITY
     tokenQuery.community = COMMUNITY
-  }
+  }*/
 
   const ssrTokens = ssr.tokens[marketplaceChain.id]
     ? [ssr.tokens[marketplaceChain.id]]
@@ -383,7 +383,7 @@ export const getStaticProps: GetStaticProps<{
     {
       limit: 100,
     }
-
+/*
   if (COLLECTION_SET_ID) {
     tokensQuery.collectionsSetId = COLLECTION_SET_ID
     collectionsQuery.collectionsSetId = COLLECTION_SET_ID
@@ -391,6 +391,9 @@ export const getStaticProps: GetStaticProps<{
     tokensQuery.community = COMMUNITY
     collectionsQuery.community = COMMUNITY
   }
+*/
+
+
 
   const promises: ReturnType<typeof fetcher>[] = []
 
