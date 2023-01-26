@@ -140,7 +140,9 @@ function MyApp({
             // Note that you should at the very least configure the source with your own domain
             apiBase: `${baseUrl}${marketplaceChain.proxyApi}`,
             apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
-            // source: 'YOUR_DOMAIN',
+            source: 'marketplace.fellowship.xyz',
+            marketplaceFee: 500,
+            marketplaceFeeRecipient: '0xd7dD9612A21F7C249Fb7F33E9C2e9144345e162b',
             normalizeRoyalties: NORMALIZE_ROYALTIES,
           }}
           theme={reservoirKitTheme}

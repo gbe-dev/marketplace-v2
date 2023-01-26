@@ -27,21 +27,5 @@ export const DefaultChain = {
 }
 
 export default [
-  DefaultChain,
-  {
-    ...polygon,
-    iconUrl: `https://api-polygon.reservoir.tools/redirect/currency/${constants.AddressZero}/icon/v1`,
-    reservoirBaseUrl: 'https://api-polygon.reservoir.tools',
-    proxyApi: '/api/reservoir/polygon',
-    routePrefix: 'polygon',
-    apiKey: process.env.POLYGON_RESERVOIR_API_KEY,
-  },
-  {
-    ...goerli,
-    iconUrl: `https://api-goerli.reservoir.tools/redirect/currency/${constants.AddressZero}/icon/v1`,
-    reservoirBaseUrl: 'https://api-goerli.reservoir.tools',
-    proxyApi: '/api/reservoir/goerli',
-    routePrefix: 'goerli',
-    apiKey: process.env.GOERLI_RESERVOIR_API_KEY,
-  },
+  DefaultChain
 ]
