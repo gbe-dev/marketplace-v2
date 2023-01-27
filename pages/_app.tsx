@@ -140,7 +140,7 @@ function MyApp({
             // Note that you should at the very least configure the source with your own domain
             apiBase: `${baseUrl}${marketplaceChain.proxyApi}`,
             apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
-            source: process.env.NEXT_PUBLIC_HOST_URL,
+            source: 'marketplace.fellowship.xyz',
             marketplaceFee: Number(process.env.NEXT_PUBLIC_MP_FEE_BPS),
             marketplaceFeeRecipient: process.env.NEXT_PUBLIC_MP_FEE_RECIPIENT,
             normalizeRoyalties: NORMALIZE_ROYALTIES,
