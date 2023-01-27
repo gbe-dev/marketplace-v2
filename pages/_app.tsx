@@ -141,7 +141,7 @@ function MyApp({
             apiBase: `${baseUrl}${marketplaceChain.proxyApi}`,
             apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
             source: process.env.NEXT_PUBLIC_SOURCE_ID,
-            marketplaceFee: process.env.NEXT_PUBLIC_MP_FEE_BPS!,
+            marketplaceFee: Number(process.env.NEXT_PUBLIC_MP_FEE_BPS),
             marketplaceFeeRecipient: process.env.NEXT_PUBLIC_MP_FEE_RECIPIENT,
             normalizeRoyalties: NORMALIZE_ROYALTIES,
           }}
