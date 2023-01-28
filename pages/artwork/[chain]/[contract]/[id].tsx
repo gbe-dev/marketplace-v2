@@ -88,7 +88,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const token = tokens && tokens[0] ? tokens[0] : undefined
   const hrFile = useTokenHR(contract, token?.token?.tokenId)
   if (token) {
-    console.log(Object.keys(token))
+    console.log(Object.keys(token.token))
 }
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
