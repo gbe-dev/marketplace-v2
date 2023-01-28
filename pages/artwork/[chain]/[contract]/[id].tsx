@@ -10,7 +10,6 @@ import {
   useCollections,
   useTokenOpenseaBanned,
   useTokens,
-  useTokenOpensea,
   useUserTokens,
 } from '@reservoir0x/reservoir-kit-ui'
 import Layout from 'components/Layout'
@@ -74,7 +73,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   )
   const collection = collections && collections[0] ? collections[0] : null
   const contract = collectionId ? collectionId?.split(':')[0] : undefined
-  const { data: tokens, mutate } = useTokenOpensea(
+  const { data: tokens, mutate } = useTokens(
     {
       tokens: [`${contract}:${id}`],
       includeAttributes: true,
@@ -88,7 +87,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const flagged = useTokenOpenseaBanned(collectionId, id)
   const token = tokens && tokens[0] ? tokens[0] : undefined
   const hrFile = useTokenHR(contract, token?.token?.tokenId)
-  
+  if (token){ media.media = hrFile.hrFile}
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
   const { data: userTokens } = useUserTokens(
