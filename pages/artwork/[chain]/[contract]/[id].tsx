@@ -85,11 +85,8 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   )
 
   const flagged = useTokenOpenseaBanned(collectionId, id)
-  const hrFile = useTokenHR(contract, tokens[0]?.token?.tokenId)
-  let temptoken = tokens && tokens[0] ? tokens[0] : undefined
-  temptoken.image = hrFile.hrFile
-  //const token = tokens && tokens[0] ? tokens[0] : undefined
-  const token = temptoken
+  const token = tokens && tokens[0] ? tokens[0] : undefined
+  const hrFile = useTokenHR(contract, token?.token?.tokenId)
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
   const { data: userTokens } = useUserTokens(
