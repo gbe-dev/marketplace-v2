@@ -65,7 +65,7 @@ const HamburgerMenu = () => {
         >
           <Link href="/">
             <Box css={{ width: 34, cursor: 'pointer' }}>
-              <img src="/reservoirLogo.svg" style={{ width: '100%' }} />
+              <img src="/favicon.png" style={{ width: '100%' }} />
             </Box>
           </Link>
           <RadixDialog.Close>

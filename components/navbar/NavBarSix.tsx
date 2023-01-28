@@ -19,7 +19,7 @@ import { ProfileDropdown } from './ProfileDropdown'
 export const NAVBAR_HEIGHT = 81
 export const NAVBAR_HEIGHT_MOBILE = 77
 
-const Navbar = () => {
+const NavbarSix = () => {
   const { theme } = useTheme()
   const { isConnected } = useAccount()
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
@@ -65,8 +65,6 @@ const Navbar = () => {
         </Flex>
       </Box>
       <Flex align="center" css={{ gap: '$3' }}>
-        <MobileSearch />
-        <ChainSwitcher />
         <ThemeSwitcher />
         <HamburgerMenu />
       </Flex>
@@ -105,27 +103,14 @@ const Navbar = () => {
             </Box>
           </Link>
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
-            <GlobalSearch
-              ref={searchRef}
-              placeholder="Search collections and addresses"
-              containerCss={{ width: '100%' }}
-              key={router.asPath}
-            />
           </Box>
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
-            <Link href="/">
-              <NavItem active={router.pathname == '/'}>Explore</NavItem>
-            </Link>
-            <Link href="/portfolio">
-              <NavItem active={router.pathname == '/portfolio'}>Sell</NavItem>
-            </Link>
           </Flex>
         </Flex>
       </Box>
 
       <Flex css={{ gap: '$3' }} justify="end" align="center">
         <ThemeSwitcher />
-        <ChainSwitcher />
         {isConnected ? (
           <ProfileDropdown />
         ) : (
@@ -138,4 +123,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default NavbarSix
