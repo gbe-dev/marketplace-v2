@@ -7,7 +7,6 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 import TrendingCollectionsTimeToggle, {
   CollectionsSortingOption,
 } from 'components/home/TrendingCollectionsTimeToggle'
-import { Footer } from 'components/home/Footer'
 import { useMediaQuery } from 'react-responsive'
 import { useMarketplaceChain, useMounted } from 'hooks'
 import LoadingSpinner from 'components/common/LoadingSpinner'
