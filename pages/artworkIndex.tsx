@@ -1,7 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { Text, Flex, Box, Button } from 'components/primitives'
 import TrendingCollectionsList from 'components/home/TrendingCollectionsList'
-import Layout from 'components/Layout'
+import LayoutSix from 'components/LayoutSix'
 import { ComponentPropsWithoutRef, useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import TrendingCollectionsTimeToggle, {
@@ -75,7 +75,7 @@ const ArtworkIndex: NextPage<Props> = ({ ssr }) => {
   }
 
   return (
-    <Layout>
+    <LayoutSix>
       <Box
         css={{
           p: 24,
@@ -140,7 +140,7 @@ const ArtworkIndex: NextPage<Props> = ({ ssr }) => {
           {!showViewAllButton && <div ref={sentryRef}></div>}
         </Flex>
       </Box>
-    </Layout>
+    </LayoutSix>
   )
 }
 
