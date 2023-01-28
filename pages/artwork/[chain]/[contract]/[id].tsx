@@ -51,7 +51,6 @@ import { spin } from 'components/common/LoadingSpinner'
 import Head from 'next/head'
 import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 import { collectionUrls } from 'utils/collectionUrls'
-import footerHtml from 'components/home/FooterSix.html';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -424,9 +423,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
           )}
         </Flex>
       </Flex>
-      <div>
-        <div dangerouslySetInnerHTML={{ __html: footerHtml }} />
-      </div>
     </Layout>
   )
 }
