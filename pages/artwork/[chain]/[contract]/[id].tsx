@@ -44,7 +44,7 @@ import FullscreenMedia from 'components/token/FullscreenMedia'
 import { useContext, useEffect, useState } from 'react'
 import { ToastContext } from 'context/ToastContextProvider'
 import { NORMALIZE_ROYALTIES } from 'pages/_app'
-import { useENSResolver, useMarketplaceChain, useMounted } from 'hooks'
+import { useENSResolver, useMarketplaceChain, useMounted, useTokenHR } from 'hooks'
 import { useRouter } from 'next/router'
 import supportedChains, { DefaultChain } from 'utils/chains'
 import { spin } from 'components/common/LoadingSpinner'
@@ -104,6 +104,8 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const owner = isOwner ? account?.address : token?.token?.owner
   const { displayName: ownerFormatted } = useENSResolver(token?.token?.owner)
 
+const hrFile = useTokenHR(contract, token?.token?.tokenId)
+console.log(contract + ' /// ' +  token?.token?.tokenId ' /// ' + hrFile)
   const tokenName = `${token?.token?.name || `#${token?.token?.tokenId}`}`
 
   const hasAttributes =
