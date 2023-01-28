@@ -12,7 +12,7 @@ import {
   useTokens,
   useUserTokens,
 } from '@reservoir0x/reservoir-kit-ui'
-import LayoutSix from 'components/LayoutSix'
+import Layout from 'components/Layout'
 import {
   Flex,
   Text,
@@ -54,7 +54,7 @@ import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
+const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const router = useRouter()
   const { addToast } = useContext(ToastContext)
   const account = useAccount()
@@ -121,7 +121,7 @@ const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
     : `${token?.token?.tokenId} - ${token?.token?.collection?.name}`
 
   return (
-    <LayoutSix>
+    <Layout>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={collection?.description as string} />
@@ -429,7 +429,7 @@ const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
           )}
         </Flex>
       </Flex>
-    </LayoutSix>
+    </Layout>
   )
 }
 
@@ -509,4 +509,4 @@ export const getStaticProps: GetStaticProps<{
   }
 }
 
-export default ArtworkIndex
+export default IndexPage
