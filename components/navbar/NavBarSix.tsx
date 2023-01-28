@@ -24,14 +24,7 @@ const NavbarSix = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const isMounted = useMounted()
 
-  let searchRef = useRef<HTMLInputElement>(null)
-
   const router = useRouter()
-  useHotkeys('meta+k', () => {
-    if (searchRef?.current) {
-      searchRef?.current?.focus()
-    }
-  })
 
   if (!isMounted) {
     return null
