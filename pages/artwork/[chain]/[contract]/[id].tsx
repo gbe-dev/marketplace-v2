@@ -54,7 +54,7 @@ import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
+const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const router = useRouter()
   const { addToast } = useContext(ToastContext)
   const account = useAccount()
