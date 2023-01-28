@@ -183,7 +183,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
           <Box
             css={{
               backgroundColor: '$gray3',
-              borderRadius: 4,
+              borderRadius: 8,
               '@sm': {
                 button: {
                   height: 0,
@@ -204,7 +204,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                 width: '100%',
                 height: 'auto',
                 minHeight: isMounted && isSmallDevice ? 300 : 445,
-                borderRadius: 4,
+                borderRadius: 8,
                 overflow: 'hidden',
               }}
               onRefreshToken={() => {
@@ -372,11 +372,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                   </Anchor>
                 </Link>
               </Flex>
-              <RarityRank
-                token={token}
-                collection={collection}
-                collectionAttributes={ssr.attributes?.attributes}
-              />
               <PriceData token={token} />
               {isMounted && (
                 <TokenActions
