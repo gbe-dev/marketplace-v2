@@ -62,7 +62,7 @@ const Button = styled('button', {
         borderRadius: 0,
       },
       rounded: {
-        borderRadius: 4,
+        borderRadius: 8,
       },
       pill: {
         borderRadius: 99999,
@@ -77,23 +77,23 @@ const Button = styled('button', {
       xs: {
         p: '$space$3',
         lineHeight: '16px',
-        minHeight: 30,
+        minHeight: 40,
       },
       small: {
         px: '$space$3',
         py: '$space$4',
         lineHeight: '12px',
-        minHeight: 30,
+        minHeight: 28,
       },
       medium: {
         px: '$space$5',
         py: '$space$3',
-        minHeight: 30,
+        minHeight: 28,
       },
       large: {
         px: '$space$5',
         py: '$space$4',
-        minHeight: 30,
+        minHeight: 52,
       },
     },
   },
@@ -103,7 +103,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 40,
-        width: 30,
+        width: 40,
         p: 0,
       },
     },
@@ -112,7 +112,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 44,
-        width: 30,
+        width: 44,
         p: 0,
       },
     },
@@ -121,7 +121,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 44,
-        width: 30,
+        width: 44,
         p: 0,
       },
     },
