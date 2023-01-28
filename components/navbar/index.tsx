@@ -25,8 +25,8 @@ const Navbar = () => {
   const { isConnected } = useAccount()
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const isMounted = useMounted()
-  var isSix = false
-  if (useRouter().pathname.includes('artwork')) {  isSix = true } else { isSix = false }
+  let isSix = false
+  if (useRouter().pathname.includes('artwork')) { isSix = true } 
   console.log(isSix)
   let searchRef = useRef<HTMLInputElement>(null)
 
@@ -108,20 +108,14 @@ const Navbar = () => {
             </Box>
           </Link>
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
-          {isSix == false ? (
+          {isSix (
             <GlobalSearch
               ref={searchRef}
               placeholder="Search collections"
               containerCss={{ width: '100%' }}
               key={router.asPath}
             />
-          ) : (            
-            <GlobalSearch
-            ref={searchRef}
-            placeholder="Search X"
-            containerCss={{ width: '100%' }}
-            key={router.asPath}
-          /> )}
+          ) }
           </Box>
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
             <Link href="/">
