@@ -69,7 +69,7 @@ function AppWrapper(props: AppProps & { baseUrl: string }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       value={{
         dark: darkTheme.className,
         light: 'light',
@@ -128,7 +128,7 @@ function MyApp({
     <HotkeysProvider>
       <ThemeProvider
         attribute="class"
-        defaultTheme="dark"
+        defaultTheme="light"
         value={{
           dark: darkTheme.className,
           light: 'light',
