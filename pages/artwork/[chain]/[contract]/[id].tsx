@@ -83,8 +83,9 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
       fallbackData: [ssr.tokens],
     }
   )
+
   const flagged = useTokenOpenseaBanned(collectionId, id)
-  const hrFile = useTokenHR(contract, token?.token?.tokenId)
+  const hrFile = useTokenHR(contract, tokens[0]?.token?.tokenId)
   let temptoken = tokens[0] 
   temptoken.image = hrFile.hrFile
   //const token = tokens && tokens[0] ? tokens[0] : undefined
