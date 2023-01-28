@@ -68,11 +68,6 @@ export const PriceData: FC<Props> = ({ token }) => {
           )}
         </Flex>
         {listSourceName && (
-          <a
-            href={listSourceRedirect}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
             <Flex
               align="center"
               css={{
@@ -81,12 +76,11 @@ export const PriceData: FC<Props> = ({ token }) => {
                 width: 'max-content',
               }}
             >
-              <img width="20px" height="20px" src={listSourceLogo} />
+              <img width="20px" height="20px" src={listSourceName == "Reservoir Market" ?  ("/favicon.png") : (listSourceLogo)} />
               <Text style="body2" css={{ color: '$gray11' }}>
                 {listSourceName == "Reservoir Market" ?  ("Fellowship Marketplace") : (listSourceName)}
               </Text>
             </Flex>
-          </a>
         )}
       </Flex>
       <Flex direction="column" align="start" css={{ gap: '$1' }}>
