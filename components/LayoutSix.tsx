@@ -22,7 +22,7 @@ const LayoutSix: FC<Props> = ({ children }) => {
         }}
       >
         <Box css={{ maxWidth: 1920, mx: 'auto' }}>
-          <NavbarSix />
+        
 
           <main>{children}</main>
           {toasts.map((toast, idx) => {
