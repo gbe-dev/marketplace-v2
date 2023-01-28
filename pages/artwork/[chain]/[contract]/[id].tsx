@@ -26,7 +26,6 @@ import { TabsList, TabsTrigger, TabsContent } from 'components/primitives/Tab'
 import * as Tabs from '@radix-ui/react-tabs'
 import AttributeCard from 'components/token/AttributeCard'
 import { PriceData } from 'components/token/PriceData'
-import RarityRank from 'components/token/RarityRank'
 import { TokenActions } from 'components/token/TokenActions'
 import {
   GetStaticProps,
