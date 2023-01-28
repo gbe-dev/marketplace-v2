@@ -105,7 +105,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const { displayName: ownerFormatted } = useENSResolver(token?.token?.owner)
 
 const hrFile = useTokenHR(contract, token?.token?.tokenId)
-console.log(contract + ' /// ' +  token?.token?.tokenId + ' /// ' + hrFile.json)
+console.log(contract + ' /// ' +  token?.token?.tokenId + ' /// ' + hrFile.hrFile)
   const tokenName = `${token?.token?.name || `#${token?.token?.tokenId}`}`
 
   const hasAttributes =
