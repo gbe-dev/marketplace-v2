@@ -196,7 +196,7 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                   style={{
                     width: 64,
                     height: 64,
-                    borderRadius: 8,
+                    borderRadius: 4,
                     objectFit: 'cover',
                   }}
                 />

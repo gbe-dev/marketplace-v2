@@ -183,7 +183,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
           <Box
             css={{
               backgroundColor: '$gray3',
-              borderRadius: 8,
+              borderRadius: 4,
               '@sm': {
                 button: {
                   height: 0,
@@ -204,7 +204,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                 width: '100%',
                 height: 'auto',
                 minHeight: isMounted && isSmallDevice ? 300 : 445,
-                borderRadius: 8,
+                borderRadius: 4,
                 overflow: 'hidden',
               }}
               onRefreshToken={() => {

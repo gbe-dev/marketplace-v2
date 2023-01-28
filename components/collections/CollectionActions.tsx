@@ -78,7 +78,7 @@ const CollectionActions: FC<CollectionActionsProps> = ({ collection }) => {
     : null
 
   const containerCss: ComponentPropsWithoutRef<typeof Flex>['css'] = {
-    borderRadius: 8,
+    borderRadius: 4,
     overflow: 'hidden',
     gap: 1,
     flexShrink: 0,

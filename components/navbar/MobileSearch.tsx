@@ -39,7 +39,7 @@ const MobileSearch = () => {
               width: '44px',
               height: '44px',
               alignItems: 'center',
-              borderRadius: 8,
+              borderRadius: 4,
               backgroundColor: '$gray3',
               color: '$gray12',
               '&:hover': {
