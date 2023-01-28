@@ -51,6 +51,7 @@ import supportedChains, { DefaultChain } from 'utils/chains'
 import { spin } from 'components/common/LoadingSpinner'
 import Head from 'next/head'
 import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
+import { collectionUrls } from 'utils/collectionUrls'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -73,9 +74,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   )
   const collection = collections && collections[0] ? collections[0] : null
 
-let collectionUrls = new Map()
-collectionUrls.set("0x398034c799fad7fdc4695c8eb8bec713ebed9da4", ["https://v2.fellowship.xyz/collections/alessandra-sanguinetti-the-adventures-of-guille-and-belinda/", "Alessandra"])
-collectionUrls.set("0xb8c55c77b3617ef22a4f552f9a47503e021c6623",["https://v2.fellowship.xyz/collections/todd-hido-roaming/", "Todd Hido"])
+
 console.log("0x398034c799fad7fdc4695c8eb8bec713ebed9da4: "+collectionUrls.get("0x398034c799fad7fdc4695c8eb8bec713ebed9da4")[0])
 console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0xb8c55c77b3617ef22a4f552f9a47503e021c6623")[1])
   const contract = collectionId ? collectionId?.split(':')[0] : undefined
