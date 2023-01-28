@@ -77,7 +77,7 @@ const Button = styled('button', {
       xs: {
         p: '$space$3',
         lineHeight: '16px',
-        minHeight: 40,
+        minHeight: 30,
       },
       small: {
         px: '$space$3',
@@ -93,7 +93,7 @@ const Button = styled('button', {
       large: {
         px: '$space$5',
         py: '$space$4',
-        minHeight: 44,
+        minHeight: 30,
       },
     },
   },
@@ -103,7 +103,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 40,
-        width: 40,
+        width: 30,
         p: 0,
       },
     },
@@ -112,7 +112,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 44,
-        width: 44,
+        width: 30,
         p: 0,
       },
     },
@@ -121,7 +121,7 @@ const Button = styled('button', {
       corners: 'circle',
       css: {
         height: 44,
-        width: 44,
+        width: 30,
         p: 0,
       },
     },
