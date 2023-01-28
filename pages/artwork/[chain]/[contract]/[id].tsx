@@ -12,7 +12,7 @@ import {
   useTokens,
   useUserTokens,
 } from '@reservoir0x/reservoir-kit-ui'
-import Layout from 'components/Layout'
+import LayoutSix from 'components/LayoutSix'
 import {
   Flex,
   Text,
@@ -121,7 +121,7 @@ const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
     : `${token?.token?.tokenId} - ${token?.token?.collection?.name}`
 
   return (
-    <Layout>
+    <LayoutSix>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={collection?.description as string} />
@@ -429,7 +429,7 @@ const ArtworkIndex: NextPage<Props> = ({ id, collectionId, ssr }) => {
           )}
         </Flex>
       </Flex>
-    </Layout>
+    </LayoutSix>
   )
 }
 
