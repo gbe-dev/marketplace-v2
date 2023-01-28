@@ -1,3 +1,4 @@
+import type { AppContext, AppProps } from 'next/app'
 import { useRef } from 'react'
 import { Box, Flex } from '../primitives'
 import GlobalSearch from './GlobalSearch'
@@ -24,6 +25,10 @@ const Navbar = () => {
   const { isConnected } = useAccount()
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const isMounted = useMounted()
+  const isSix = false 
+  if (useRouter.pathname.includes('artwork')) {
+    const isSix = true
+  }
 
   let searchRef = useRef<HTMLInputElement>(null)
 
@@ -105,12 +110,20 @@ const Navbar = () => {
             </Box>
           </Link>
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
+          {isSix == false ? (
             <GlobalSearch
               ref={searchRef}
               placeholder="Search collections"
               containerCss={{ width: '100%' }}
               key={router.asPath}
             />
+          ) : (            
+            <GlobalSearch
+            ref={searchRef}
+            placeholder="Search X"
+            containerCss={{ width: '100%' }}
+            key={router.asPath}
+          /> )}
           </Box>
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
             <Link href="/">
