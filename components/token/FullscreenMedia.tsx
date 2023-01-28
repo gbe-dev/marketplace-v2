@@ -54,7 +54,7 @@ const FullscreenMedia: FC<Props> = ({ token }) => {
               zIndex: 1000,
               inset: 0,
               width: '100vw',
-              height: '100vh',
+              //height: '100vh',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               backdropFilter: '20px',
             }}

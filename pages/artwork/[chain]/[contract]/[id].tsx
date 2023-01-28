@@ -84,7 +84,11 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
     }
   )
   const flagged = useTokenOpenseaBanned(collectionId, id)
-  const token = tokens && tokens[0] ? tokens[0] : undefined
+  const hrFile = useTokenHR(contract, token?.token?.tokenId)
+  let temptoken = tokens[0] 
+  temptoken.image = hrFile.hrFile
+  //const token = tokens && tokens[0] ? tokens[0] : undefined
+  const token = temptoken
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
   const { data: userTokens } = useUserTokens(
@@ -104,8 +108,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const owner = isOwner ? account?.address : token?.token?.owner
   const { displayName: ownerFormatted } = useENSResolver(token?.token?.owner)
 
-const hrFile = useTokenHR(contract, token?.token?.tokenId)
-console.log(contract + ' /// ' +  token?.token?.tokenId + ' /// ' + hrFile.hrFile)
+
   const tokenName = `${token?.token?.name || `#${token?.token?.tokenId}`}`
 
   const hasAttributes =
