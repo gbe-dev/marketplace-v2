@@ -73,10 +73,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
     }
   )
   const collection = collections && collections[0] ? collections[0] : null
-
-
-  console.log("0x398034c799fad7fdc4695c8eb8bec713ebed9da4: "+collectionUrls.get("0x398034c799fad7fdc4695c8eb8bec713ebed9da4")[0])
-  console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0xb8c55c77b3617ef22a4f552f9a47503e021c6623")[1])
   const contract = collectionId ? collectionId?.split(':')[0] : undefined
   const { data: tokens, mutate } = useTokens(
     {
