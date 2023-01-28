@@ -83,7 +83,7 @@ export const PriceData: FC<Props> = ({ token }) => {
             >
               <img width="20px" height="20px" src={listSourceLogo} />
               <Text style="body2" css={{ color: '$gray11' }}>
-                {listSourceName}
+                {listSourceName == "Reservoir Market" ?  ("Fellowship Marketplace") : (listSourceName)}
               </Text>
             </Flex>
           </a>
