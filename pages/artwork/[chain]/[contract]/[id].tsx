@@ -75,8 +75,8 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const collection = collections && collections[0] ? collections[0] : null
 
 
-console.log("0x398034c799fad7fdc4695c8eb8bec713ebed9da4: "+collectionUrls.get("0x398034c799fad7fdc4695c8eb8bec713ebed9da4")[0])
-console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0xb8c55c77b3617ef22a4f552f9a47503e021c6623")[1])
+  console.log("0x398034c799fad7fdc4695c8eb8bec713ebed9da4: "+collectionUrls.get("0x398034c799fad7fdc4695c8eb8bec713ebed9da4")[0])
+  console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0xb8c55c77b3617ef22a4f552f9a47503e021c6623")[1])
   const contract = collectionId ? collectionId?.split(':')[0] : undefined
   const { data: tokens, mutate } = useTokens(
     {
@@ -259,7 +259,7 @@ console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0
           <Flex justify="between" align="center" css={{ mb: 20 }}>
             <Flex align="center" css={{ mr: '$2', gap: '$2' }}>
               <Link
-                href={`/collection/${router.query.chain}/${collectionId}`}
+                href={collectionUrls.get(collectionId)[0]}
                 legacyBehavior={true}
               >
                 <Anchor
@@ -272,7 +272,7 @@ console.log("0xb8c55c77b3617ef22a4f552f9a47503e021c6623: "+collectionUrls.get("0
                 >
                   <FontAwesomeIcon icon={faArrowLeft} height={16} />
                   <Text css={{ color: 'inherit' }} style="subtitle1" ellipsify>
-                    {collection?.name}
+                    {collectionUrls.get(collectionId)[1]}
                   </Text>
                 </Anchor>
               </Link>
