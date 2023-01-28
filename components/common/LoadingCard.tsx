@@ -13,7 +13,7 @@ const LoadingCard = () => {
       direction="column"
       justify="end"
       css={{
-        borderRadius: 4,
+        borderRadius: 8,
         overflow: 'hidden',
         background: '$gray6',
         height: '100%',

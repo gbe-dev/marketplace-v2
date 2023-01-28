@@ -91,7 +91,7 @@ export const MobileTokenFilters: FC<Props> = ({
                 width: '44px',
                 height: '44px',
                 alignItems: 'center',
-                borderRadius: 4,
+                borderRadius: 8,
                 backgroundColor: '$gray3',
                 color: '$gray12',
                 '&:hover': {

@@ -44,7 +44,7 @@ export default ({
   return (
     <Box
       css={{
-        borderRadius: 4,
+        borderRadius: 8,
         overflow: 'hidden',
         background: '$neutralBgSubtle',
 
@@ -145,7 +145,7 @@ export default ({
                 px: '$1',
                 py: 2,
                 background: '$gray5',
-                borderRadius: 4,
+                borderRadius: 8,
                 minWidth: 'max-content',
               }}
             >
