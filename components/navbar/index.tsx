@@ -118,14 +118,16 @@ const Navbar = () => {
           </Box>
             : null
           }
-          {!isSix ?
+         
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
+          {!isSix ?
             <Link href="/">
               <NavItem active={router.pathname == '/'}>Explore</NavItem>
             </Link>
             <Link href="/portfolio">
               <NavItem active={router.pathname == '/portfolio'}>Sell</NavItem>
             </Link>
+            : null
           }
           </Flex>
         </Flex>
