@@ -67,7 +67,9 @@ const Navbar = () => {
         </Flex>
       </Box>
       <Flex align="center" css={{ gap: '$3' }}>
-        <MobileSearch />
+      {!isSix ?
+        <MobileSearch /> : null
+      }
         <ChainSwitcher />
         <ThemeSwitcher />
         <HamburgerMenu />
@@ -116,6 +118,7 @@ const Navbar = () => {
           </Box>
             : null
           }
+          {!isSix ?
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
             <Link href="/">
               <NavItem active={router.pathname == '/'}>Explore</NavItem>
@@ -123,7 +126,7 @@ const Navbar = () => {
             <Link href="/portfolio">
               <NavItem active={router.pathname == '/portfolio'}>Sell</NavItem>
             </Link>
-
+          }
           </Flex>
         </Flex>
       </Box>
