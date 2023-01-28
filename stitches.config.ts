@@ -42,7 +42,7 @@ export const { createTheme, keyframes, styled, globalCss, getCssText } =
         primary6: '$violet6',
         primary7: '$violet7',
         primary8: '$violet8',
-        primary9: '$violet9',
+        primary9: '$blackA12',
         primary10: '$violet10',
         primary11: '$violet11',
         primary12: '$violet12',

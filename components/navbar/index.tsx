@@ -71,7 +71,6 @@ const Navbar = () => {
         <MobileSearch /> : null
       }
         <ChainSwitcher />
-        <ThemeSwitcher />
         <HamburgerMenu />
       </Flex>
     </Flex>
@@ -132,7 +131,6 @@ const Navbar = () => {
       </Box>
 
       <Flex css={{ gap: '$3' }} justify="end" align="center">
-        <ThemeSwitcher />
         <ChainSwitcher />
         {isConnected ? (
           <ProfileDropdown />
