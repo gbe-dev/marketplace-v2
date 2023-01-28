@@ -260,7 +260,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
             <Flex align="center" css={{ mr: '$2', gap: '$2' }}>
               <Link
                 href={collectionUrls.get(collectionId)[0]}
-                legacyBehavior={true}
+                legacyBehavior={false}
               >
                 <Anchor
                   color="primary"
