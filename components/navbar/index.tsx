@@ -108,6 +108,7 @@ const Navbar = () => {
               )}
             </Box>
           </Link> {!isSix ?
+          <>
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
             <GlobalSearch
               ref={searchRef}
@@ -116,20 +117,17 @@ const Navbar = () => {
               key={router.asPath}
             /> 
           </Box>
-            : null
-          }
-         
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
-          {!isSix ?
             <Link href="/">
               <NavItem active={router.pathname == '/'}>Explore</NavItem>
             </Link>
             <Link href="/portfolio">
               <NavItem active={router.pathname == '/portfolio'}>Sell</NavItem>
             </Link>
+          </Flex>
+          </>
             : null
           }
-          </Flex>
         </Flex>
       </Box>
 
