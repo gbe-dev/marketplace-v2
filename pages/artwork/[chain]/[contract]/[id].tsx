@@ -509,4 +509,4 @@ export const getStaticProps: GetStaticProps<{
   }
 }
 
-export default IndexPage
+export default ArtworkIndex
