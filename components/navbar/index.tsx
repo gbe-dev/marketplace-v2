@@ -25,10 +25,8 @@ const Navbar = () => {
   const { isConnected } = useAccount()
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const isMounted = useMounted()
-  const isSix = false 
-  if (useRouter().pathname.includes('artwork')) {
-    const isSix = true
-  }
+  var isSix = false
+  if (useRouter().pathname.includes('artwork')) {  isSix = true } else { isSix = false }
   console.log(isSix)
   let searchRef = useRef<HTMLInputElement>(null)
 
