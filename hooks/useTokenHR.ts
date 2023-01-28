@@ -15,5 +15,6 @@ export default (address?: string, tokenId?: string, chainId: number = 1) => {
   return {
     ...response,
     hrFile: response.data?.image_original_url,
+    token_metadata: response.data?.token_metadata,
   }
 }
