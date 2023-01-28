@@ -28,8 +28,9 @@ const Navbar = () => {
   const isSix = false 
   if (useRouter().pathname.includes('artwork')) {
     const isSix = true
+    console.log('ye')
   }
-
+  console.log(useRouter().pathname)
   let searchRef = useRef<HTMLInputElement>(null)
 
   const router = useRouter()
