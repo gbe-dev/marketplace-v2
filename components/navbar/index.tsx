@@ -107,7 +107,7 @@ const Navbar = () => {
             </Box>
           </Link>
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
-          {isSix ?
+          {!isSix ?
             <GlobalSearch
               ref={searchRef}
               placeholder="Search collections"
