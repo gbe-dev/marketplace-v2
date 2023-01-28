@@ -59,8 +59,8 @@ const wagmiClient = createClient({
 
 //CONFIGURABLE: Here you can override any of the theme tokens provided by RK: https://docs.reservoir.tools/docs/reservoir-kit-theming-and-customization
 const reservoirKitThemeOverrides = {
-  headlineFont: 'Inter',
-  font: 'Inter',
+  headlineFont: 'MonumentGrotesk',
+  font: 'MonumentGrotesk',
   primaryColor: '#6E56CB',
   primaryHoverColor: '#644fc1',
 }
