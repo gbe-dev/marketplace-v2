@@ -9,7 +9,6 @@ import NavItem from './NavItem'
 import ThemeSwitcher from './ThemeSwitcher'
 import ChainSwitcher from './ChainSwitcher'
 import HamburgerMenu from './HamburgerMenu'
-import MobileSearch from './MobileSearch'
 import { useTheme } from 'next-themes'
 import { useMediaQuery } from 'react-responsive'
 import { useMounted } from '../../hooks'
@@ -102,10 +101,6 @@ const NavbarSix = () => {
               )}
             </Box>
           </Link>
-          <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
-          </Box>
-          <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
-          </Flex>
         </Flex>
       </Box>
 
