@@ -90,10 +90,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const token_metadata = hrFile.token_metadata
   if (token && hrFile.hrFile && hrFile.hrFile != ""){
     let tokentemp = token
-    if (tokentemp.token) { 
-      tokentemp.token.image = hrFile.hrFile;
-      }
-    }
+    if (tokentemp.token) { tokentemp.token.image = hrFile.hrFile }
   }
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
@@ -426,7 +423,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                 </TabsContent>
                 <TabsContent value="info">
                   {collection && (
-                    <TokenInfo token={token} collection={collection}/>
+                    <TokenInfo token={token} collection={collection} token_metadata={token_metadata}/>
                   )}
                 </TabsContent>
               </Tabs.Root>
