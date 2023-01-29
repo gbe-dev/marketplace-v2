@@ -91,7 +91,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
     let tokentemp = token
     if (tokentemp) {
   console.log(JSON.stringify(tokentemp));
-  tokentemp.image = hrFile.hrFile;
+  tokentemp.token.image = hrFile.hrFile;
   console.log(JSON.stringify(tokentemp));
 }
   }
