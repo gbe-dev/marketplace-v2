@@ -87,12 +87,17 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const flagged = useTokenOpenseaBanned(collectionId, id)
   const token = tokens && tokens[0] ? tokens[0] : undefined
   const hrFile = useTokenHR(contract, token?.token?.tokenId)
-  if (token){
+  if (token && hrFile.hrFile && hrFile.hrFile != ""){
     let tokentemp = token
-    if (tokentemp.token) {
+    if (tokentemp.token) { 
       tokentemp.token.image = hrFile.hrFile;
-      console.log(JSON.stringify(tokentemp));
-  }
+      if ( hrFile.token_metadata ){
+        tokentemp.token = {
+          ...tokentemp,
+          token_metadata: hrFile.token_metadata
+        };
+      }
+    }
   }
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 

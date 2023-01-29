@@ -209,9 +209,18 @@ export const TokenInfo: FC<Props> = ({ token, collection }) => {
             >
               Token ID
             </Text>
-            <Text style="subtitle1" ellipsify css={{ maxWidth: '100%' }}>
-              {token?.token?.tokenId}
-            </Text>
+            <Anchor
+              href={token.token.token_metadata}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="primary"
+              weight="medium"
+            >
+              <Flex align="center" css={{ gap: '$2' }}>
+                {token?.token?.tokenId}
+                <FontAwesomeIcon icon={faExternalLink} width={12} height={15} />
+              </Flex>
+            </Anchor>          
           </Flex>
           <Flex justify="between" css={{ width: '100%' }}>
             <Text
