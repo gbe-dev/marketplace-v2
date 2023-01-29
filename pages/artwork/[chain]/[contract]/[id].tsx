@@ -90,10 +90,9 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   if (token){
     let tokentemp = token
     if (tokentemp.token) {
-  console.log(JSON.stringify(tokentemp));
-  tokentemp.token.image = hrFile.hrFile;
-  console.log(JSON.stringify(tokentemp));
-}
+      tokentemp.token.image = hrFile.hrFile;
+      console.log(JSON.stringify(tokentemp));
+  }
   }
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
