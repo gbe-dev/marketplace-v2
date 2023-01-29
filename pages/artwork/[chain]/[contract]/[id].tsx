@@ -87,6 +87,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const flagged = useTokenOpenseaBanned(collectionId, id)
   const token = tokens && tokens[0] ? tokens[0] : undefined
   const hrFile = useTokenHR(contract, token?.token?.tokenId)
+  const token_metadata = hrFile.token_metadata
   if (token && hrFile.hrFile && hrFile.hrFile != ""){
     let tokentemp = token
     if (tokentemp.token) { 
@@ -94,7 +95,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
       if ( hrFile.token_metadata ){
         tokentemp.token = {
           ...tokentemp,
-          token_metadata: hrFile.token_metadata
+          token_metadata: token_metadata
         };
       }
     }
@@ -430,7 +431,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                 </TabsContent>
                 <TabsContent value="info">
                   {collection && (
-                    <TokenInfo token={token} collection={collection} />
+                    <TokenInfo token={token} collection={collection} token_metadata={token_metadata}/>
                   )}
                 </TabsContent>
               </Tabs.Root>

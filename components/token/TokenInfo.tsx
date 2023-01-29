@@ -18,9 +18,10 @@ import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 type Props = {
   token: ReturnType<typeof useTokens>['data'][0] | null
   collection: NonNullable<ReturnType<typeof useCollections>['data']>[0] | null
+  token_metadata: string | null;
 }
 
-export const TokenInfo: FC<Props> = ({ token, collection }) => {
+export const TokenInfo: FC<Props> = ({ token, collection, token_metadata }) => {
   const marketplaceChain = useMarketplaceChain()
   const { theme } = useTheme()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -209,9 +210,9 @@ export const TokenInfo: FC<Props> = ({ token, collection }) => {
             >
               Token ID
             </Text>
-            {token?.token && (
+            {token_metadata && (
             <Anchor
-              href={token.token.token_metadata}
+              href={token_metadata}
               target="_blank"
               rel="noopener noreferrer"
               color="primary"
