@@ -417,7 +417,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
                 </TabsContent>
                 <TabsContent value="info">
                   {collection && (
-                    <TokenInfo token={token} collection={collection} />
+                    <TokenInfo token={token} collection={collection} token_metadata={""}/>
                   )}
                 </TabsContent>
               </Tabs.Root>
