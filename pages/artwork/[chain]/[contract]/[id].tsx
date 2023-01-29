@@ -92,11 +92,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
     let tokentemp = token
     if (tokentemp.token) { 
       tokentemp.token.image = hrFile.hrFile;
-      if ( hrFile.token_metadata ){
-        tokentemp.token = {
-          ...tokentemp,
-          token_metadata: token_metadata
-        };
       }
     }
   }
