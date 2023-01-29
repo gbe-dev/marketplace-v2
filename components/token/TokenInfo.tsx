@@ -209,6 +209,7 @@ export const TokenInfo: FC<Props> = ({ token, collection }) => {
             >
               Token ID
             </Text>
+            {token?.token && (
             <Anchor
               href={token.token.token_metadata}
               target="_blank"
@@ -221,6 +222,9 @@ export const TokenInfo: FC<Props> = ({ token, collection }) => {
                 <FontAwesomeIcon icon={faExternalLink} width={12} height={15} />
               </Flex>
             </Anchor>          
+            )
+            }
+    
           </Flex>
           <Flex justify="between" css={{ width: '100%' }}>
             <Text
