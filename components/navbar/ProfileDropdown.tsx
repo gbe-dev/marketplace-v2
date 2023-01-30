@@ -11,7 +11,7 @@ import {
   Text,
 } from 'components/primitives'
 import Link from 'next/link'
-import { faCopy, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faRightFromBracket, faF } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useENSResolver } from 'hooks'
 import CopyText from 'components/common/CopyText'
@@ -39,7 +39,7 @@ export const ProfileDropdown: FC = () => {
       {ensAvatar ? (
         <Avatar size="medium" src={ensAvatar} />
       ) : (
-        <FontAwesomeIcon icon={"fa-thin fa-square-f"} width={44} height={44} />
+        <FontAwesomeIcon icon={faF} width={44} height={44} />
       )}
     </Button>
   )
@@ -69,6 +69,7 @@ export const ProfileDropdown: FC = () => {
             amount={balance?.value}
             decimals={balance?.decimals}
             textStyle="body1"
+            color="gray1"
             logoHeight={14}
           />
         </Flex>
@@ -77,12 +78,13 @@ export const ProfileDropdown: FC = () => {
         <Flex
           justify="between"
           align="center"
+          color="gray1"
           css={{
             cursor: 'pointer',
           }}
           onClick={() => disconnect()}
         >
-          <Text style="body1">Logout</Text>
+          <Text style="gray1">Logout</Text>
           <Box css={{ color: '$gray1' }}>
             <FontAwesomeIcon icon={faRightFromBracket} width={16} height={16} />
           </Box>
