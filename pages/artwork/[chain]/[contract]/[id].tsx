@@ -92,6 +92,12 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
     let tokentemp = token
     if (tokentemp.token) { tokentemp.token.image = tokenExtra.hrFile }
   }
+  const { displayName: ownerFormatted } = useENSResolver(token?.token?.owner)
+  let osName = ""
+  if (tokenExtra && tokenExtra.osName && tokenExtra.osName != ""){
+    osName = tokenExtra.osName
+  }
+
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
   const { data: userTokens } = useUserTokens(
@@ -109,11 +115,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
       ? true
       : token?.token?.owner?.toLowerCase() === account?.address?.toLowerCase()
   const owner = isOwner ? account?.address : token?.token?.owner
-  const { displayName: ownerFormatted } = useENSResolver(token?.token?.owner)
-  let osName = ""
-  if (tokenExtra && tokenExtra.osName && tokenExtra.osName != ""){
-    osName = useTokenExtra.osName
-  }
 
   const tokenName = `${token?.token?.name || `#${token?.token?.tokenId}`}`
 
