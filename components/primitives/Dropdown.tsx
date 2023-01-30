@@ -12,7 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 const DropdownMenuContent = styled(DropdownMenuPrimitive.DropdownMenuContent, {
   mx: '$4',
   p: '$2',
-  borderRadius: 8,
+  borderRadius: 5,
   zIndex: 5,
   background: '$panelBg',
   $$borderColor: '$colors$gray7',
