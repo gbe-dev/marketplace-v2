@@ -1,4 +1,5 @@
 import { useCollections, useTokens } from '@reservoir0x/reservoir-kit-ui'
+import {useTokenExtra} from 'hooks'
 import { Anchor, Button, Flex, Text, Tooltip } from 'components/primitives'
 import { ComponentPropsWithoutRef, FC, useRef, useState } from 'react'
 import { faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -18,10 +19,10 @@ import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 type Props = {
   token: ReturnType<typeof useTokens>['data'][0] | null
   collection: NonNullable<ReturnType<typeof useCollections>['data']>[0] | null
-  token_metadata: string | null;
+  tokenExtra: ReturnType<typeof useTokenExtra>['data'][0] | null;
 }
 
-export const TokenInfo: FC<Props> = ({ token, collection, token_metadata }) => {
+export const TokenInfo: FC<Props> = ({ token, collection, tokenExtra }) => {
   const marketplaceChain = useMarketplaceChain()
   const { theme } = useTheme()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -82,6 +83,8 @@ export const TokenInfo: FC<Props> = ({ token, collection, token_metadata }) => {
   if (descriptionRef.current) {
     isLongDescription = descriptionRef.current.offsetHeight > 50
   }
+console.log(JSON.stringify(collection))
+console.log(collection?.openseaVerificationStatus)
 
   return (
     <>
@@ -210,9 +213,9 @@ export const TokenInfo: FC<Props> = ({ token, collection, token_metadata }) => {
             >
               Token ID
             </Text>
-            {token_metadata && (
+            {tokenExtra.token_metadata && (
             <Anchor
-              href={token_metadata}
+              href={tokenExtra.token_metadata}
               target="_blank"
               rel="noopener noreferrer"
               color="primary"
