@@ -34,7 +34,6 @@ export const ProfileDropdown: FC = () => {
       }}
       corners="circle"
       type="button"
-      color="gray1"
     >
       {ensAvatar ? (
         <Avatar size="medium" src={ensAvatar} />
