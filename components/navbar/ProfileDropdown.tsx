@@ -39,7 +39,7 @@ export const ProfileDropdown: FC = () => {
       {ensAvatar ? (
         <Avatar size="medium" src={ensAvatar} />
       ) : (
-        <FontAwesomeIcon icon={fa-square-f} width={44} height={44} />
+        <FontAwesomeIcon icon={"fa-thin fa-square-f"} width={44} height={44} />
       )}
     </Button>
   )
