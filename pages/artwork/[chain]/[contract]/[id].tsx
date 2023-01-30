@@ -97,6 +97,8 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   if (tokenExtra && tokenExtra.osName && tokenExtra.osName != ""){
     osName = tokenExtra.osName
   }
+console.log("ENS" + ownerFormatted)
+console.log("OS" + osName
 
   const checkUserOwnership = token?.token?.kind === 'erc1155'
 
