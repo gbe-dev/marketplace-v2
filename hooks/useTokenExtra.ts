@@ -14,7 +14,7 @@ export default (address?: string, tokenId?: string, chainId: number = 1) => {
   )
   let hrFile, token_metadata, osName = ""
 
-  if (response.data && response.data .sucess == "true")
+  if (response.data && response.data.sucess == "true")
   {
     hrFile= response.data?.image_original_url ? response.data?.image_original_url : ''
     token_metadata= response.data?.token_metadata ? response.data?.token_metadata : ''
