@@ -22,8 +22,6 @@ export default (address?: string, tokenId?: string, chainId: number = 1) => {
     console.log("Fetching OS Data - Success")
   }
   else {  
-    console.log(response.data)
-    console.log(response.data.success)
     console.log("Fetching OS Data - Fail")
    }
   return {
