@@ -49,7 +49,7 @@ const AnimatedDropdownMenuContent = forwardRef<
 const DropdownMenuItem = styled(DropdownMenuPrimitive.DropdownMenuItem, {
   fontSize: 16,
   fontFamily: '$body',
-  color: '$gray12',
+  color: '$gray1',
   px: '$2',
   py: '$4',
   borderRadius: 8,
