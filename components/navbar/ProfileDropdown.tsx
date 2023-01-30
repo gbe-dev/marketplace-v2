@@ -68,7 +68,6 @@ export const ProfileDropdown: FC = () => {
             amount={balance?.value}
             decimals={balance?.decimals}
             textStyle="body1"
-            color="gray1"
             logoHeight={14}
           />
         </Flex>
