@@ -69,6 +69,7 @@ export const ProfileDropdown: FC = () => {
             decimals={balance?.decimals}
             textStyle="body1"
             logoHeight={14}
+            css={{ color: '$gray1' }}
           />
         </Flex>
       </DropdownMenuItem>
