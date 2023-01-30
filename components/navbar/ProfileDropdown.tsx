@@ -39,7 +39,7 @@ export const ProfileDropdown: FC = () => {
       {ensAvatar ? (
         <Avatar size="medium" src={ensAvatar} />
       ) : (
-        <Jazzicon diameter={44} seed={jsNumberForAddress(address as string)} />
+        <FontAwesomeIcon icon={fa-square-f} width={44} height={44} />
       )}
     </Button>
   )
@@ -53,9 +53,9 @@ export const ProfileDropdown: FC = () => {
       >
         <Link href={`/profile/${address}`} style={{ flex: 1 }}>
           <Flex justify="between" align="center" css={{ width: '100%' }}>
-            <Text style="body1">
-              {shortEnsName ? shortEnsName : shortAddress}
-            </Text>
+          <Text style={{ body1, color: 'white' }}>
+            {shortEnsName ? shortEnsName : shortAddress}
+          </Text>
           </Flex>
         </Link>
       </DropdownMenuItem>
@@ -83,7 +83,7 @@ export const ProfileDropdown: FC = () => {
           onClick={() => disconnect()}
         >
           <Text style="body1">Logout</Text>
-          <Box css={{ color: '$gray10' }}>
+          <Box css={{ color: '$gray1' }}>
             <FontAwesomeIcon icon={faRightFromBracket} width={16} height={16} />
           </Box>
         </Flex>
