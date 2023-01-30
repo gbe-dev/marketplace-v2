@@ -11,7 +11,7 @@ import {
   Text,
 } from 'components/primitives'
 import Link from 'next/link'
-import { faCopy, faRightFromBracket, faF" /> } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faRightFromBracket, faF } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useENSResolver } from 'hooks'
 import CopyText from 'components/common/CopyText'
