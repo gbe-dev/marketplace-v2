@@ -52,7 +52,7 @@ export const ProfileDropdown: FC = () => {
       >
         <Link href={`/profile/${address}`} style={{ flex: 1 }}>
           <Flex justify="between" align="center" css={{ width: '100%' }}>
-          <Text style="body1" css={{ color: '$gray11' }}>
+          <Text style="body1" css={{ color: '$gray1' }}>
             {shortEnsName ? shortEnsName : shortAddress}
           </Text>
           </Flex>
@@ -61,7 +61,7 @@ export const ProfileDropdown: FC = () => {
       <Link href={`/portfolio`}>
         <DropdownMenuItem>Portfolio</DropdownMenuItem>
       </Link>
-      <DropdownMenuItem css={{ cursor: 'text' }}>
+      <DropdownMenuItem css={{ cursor: 'text', color: '$gray1' }}>
         <Flex justify="between">
           Balance
           <FormatCryptoCurrency
@@ -81,7 +81,7 @@ export const ProfileDropdown: FC = () => {
           }}
           onClick={() => disconnect()}
         >
-          <Text style="body1" css={{ color: '$gray11' }}>Logout</Text>
+          <Text style="body1" css={{ color: '$gray1' }}>Logout</Text>
           <Box css={{ color: '$gray1' }}>
             <FontAwesomeIcon icon={faRightFromBracket} width={16} height={16} />
           </Box>
