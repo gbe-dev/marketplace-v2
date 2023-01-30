@@ -19,7 +19,9 @@ export default (address?: string, tokenId?: string, chainId: number = 1) => {
     hrFile= response.data?.image_original_url ? response.data?.image_original_url : ''
     token_metadata= response.data?.token_metadata ? response.data?.token_metadata : ''
     osName= response.data?.owner?.user?.username ? response.data?.owner?.user?.username : ''
+    console.log("Fetching OS Data - Success")
   }
+  else { console.log("Fetching OS Data - Fail") }
   return {
     ...response,
     hrFile: hrFile,
