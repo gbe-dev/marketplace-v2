@@ -11,7 +11,7 @@ import {
   Text,
 } from 'components/primitives'
 import Link from 'next/link'
-import { faCopy, faRightFromBracket, faF } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faRightFromBracket, faF" /> } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useENSResolver } from 'hooks'
 import CopyText from 'components/common/CopyText'
@@ -34,7 +34,7 @@ export const ProfileDropdown: FC = () => {
       }}
       corners="circle"
       type="button"
-      color="gray3"
+      color="gray1"
     >
       {ensAvatar ? (
         <Avatar size="medium" src={ensAvatar} />
@@ -53,7 +53,7 @@ export const ProfileDropdown: FC = () => {
       >
         <Link href={`/profile/${address}`} style={{ flex: 1 }}>
           <Flex justify="between" align="center" css={{ width: '100%' }}>
-          <Text style={{ fontFamily: 'body1', color: 'white' }}>
+          <Text style="body1" color="$gray1" css={{ color: '$gray11' }}>
             {shortEnsName ? shortEnsName : shortAddress}
           </Text>
           </Flex>
