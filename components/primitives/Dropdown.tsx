@@ -52,7 +52,7 @@ const DropdownMenuItem = styled(DropdownMenuPrimitive.DropdownMenuItem, {
   color: '$gray1',
   px: '$2',
   py: '$4',
-  borderRadius: 8,
+  borderRadius: 5,
   outline: 'none',
   cursor: 'pointer',
   '&:hover': {
