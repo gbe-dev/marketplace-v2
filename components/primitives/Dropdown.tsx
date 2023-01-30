@@ -56,10 +56,10 @@ const DropdownMenuItem = styled(DropdownMenuPrimitive.DropdownMenuItem, {
   outline: 'none',
   cursor: 'pointer',
   '&:hover': {
-    backgroundColor: '$gray5',
+    backgroundColor: '$gray7',
   },
   '&:focus': {
-    backgroundColor: '$gray5',
+    backgroundColor: '$gray7',
   },
 })
 
