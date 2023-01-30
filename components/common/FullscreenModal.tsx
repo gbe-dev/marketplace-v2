@@ -24,6 +24,7 @@ export const FullscreenModal: FC<Props> = ({ trigger, children }) => {
             right: 0,
             bottom: 0,
             zIndex: 9999,
+            background: '$gray12',
           }}
         >
           <Content
