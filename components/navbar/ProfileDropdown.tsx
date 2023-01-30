@@ -78,13 +78,12 @@ export const ProfileDropdown: FC = () => {
         <Flex
           justify="between"
           align="center"
-          color="gray1"
           css={{
             cursor: 'pointer',
           }}
           onClick={() => disconnect()}
         >
-          <Text style="gray1">Logout</Text>
+          <Text style="body1" color="$gray1" css={{ color: '$gray11' }}>Logout</Text>
           <Box css={{ color: '$gray1' }}>
             <FontAwesomeIcon icon={faRightFromBracket} width={16} height={16} />
           </Box>
