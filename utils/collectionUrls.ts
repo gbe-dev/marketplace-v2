@@ -53,5 +53,7 @@ collectionUrls.set("0xBdD090BB91638ec0972f5f34480C300a6825A15d", ["https://v2.fe
 collectionUrls.set("0x28398a2c1459119efa3e6699e928612ea4909a13", ["https://v2.fellowship.xyz/collections/tania-franco-klein-our-life-in-the-shadows/", "Tania Franco Klein: Our Life in the Shadows"])
 collectionUrls.set("0x23e3f2ea133f2c80558e181c4f78f4da3bc7c477", ["https://v2.fellowship.xyz/collections/todd-hido-house-hunting/", "Todd Hido: House Hunting"])
 collectionUrls.set("0xb8c55c77b3617ef22a4f552f9a47503e021c6623", ["https://v2.fellowship.xyz/collections/todd-hido-roaming/", "Todd Hido: Roaming"])
+collectionUrls.set("0xb8c55c77b3617ef22a4f552f9a47503e021c6623", ["https://v2.fellowship.xyz/collections/todd-hido-roaming/", "Todd Hido: Roaming"])
+collectionUrls.set("0xcbf093b3769e88f7ab8afa3eba106d7ef7fbcb05", ["https://fellowship.xyz/collections/david-maisel-terminal-mirage/", "David Maisel: Terminal Mirage"])
 
 export { collectionUrls }
