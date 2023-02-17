@@ -1,4 +1,4 @@
-import 'fonts/inter.css'
+import { Inter } from '@next/font/google'
 import type { AppContext, AppProps } from 'next/app'
 import { default as NextApp } from 'next/app'
 import { ThemeProvider, useTheme } from 'next-themes'
@@ -29,6 +29,10 @@ import { useMarketplaceChain } from 'hooks'
 import ChainContextProvider from 'context/ChainContextProvider'
 import AnalyticsProvider from 'components/AnalyticsProvider'
 
+const inter = Inter({
+  subsets: ['latin'],
+})
+
 export const NORMALIZE_ROYALTIES = process.env.NEXT_PUBLIC_NORMALIZE_ROYALTIES
   ? process.env.NEXT_PUBLIC_NORMALIZE_ROYALTIES === 'true'
   : false
@@ -57,9 +61,10 @@ const wagmiClient = createClient({
   provider,
 })
 
+//CONFIGURABLE: Here you can override any of the theme tokens provided by RK: https://docs.reservoir.tools/docs/reservoir-kit-theming-and-customization
 const reservoirKitThemeOverrides = {
-  headlineFont: 'Inter',
-  font: 'Inter',
+  headlineFont: inter.style.fontFamily,
+  font: inter.style.fontFamily,
   primaryColor: '#6E56CB',
   primaryHoverColor: '#644fc1',
 }
@@ -135,9 +140,9 @@ function MyApp({
       >
         <ReservoirKitProvider
           options={{
+            //CONFIGURABLE: Override any configuration available in RK: https://docs.reservoir.tools/docs/reservoirkit-ui#configuring-reservoirkit-ui
+            // Note that you should at the very least configure the source with your own domain
             apiBase: `${baseUrl}${marketplaceChain.proxyApi}`,
-            apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
-            // Replace source with your domain
             // source: 'YOUR_DOMAIN',
             normalizeRoyalties: NORMALIZE_ROYALTIES,
           }}

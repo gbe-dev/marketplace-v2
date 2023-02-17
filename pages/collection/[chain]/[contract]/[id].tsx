@@ -63,9 +63,10 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   const [tabValue, setTabValue] = useState('info')
   const [isRefreshing, setIsRefreshing] = useState(false)
   const { proxyApi } = useMarketplaceChain()
+  const contract = collectionId ? collectionId?.split(':')[0] : undefined
   const { data: collections } = useCollections(
     {
-      id: collectionId,
+      contract: contract,
     },
     {
       fallbackData: [ssr.collection],
@@ -73,7 +74,6 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
   )
   const collection = collections && collections[0] ? collections[0] : null
 
-  const contract = collectionId ? collectionId?.split(':')[0] : undefined
   const { data: tokens, mutate } = useTokens(
     {
       tokens: [`${contract}:${id}`],
@@ -165,7 +165,8 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
           css={{
             maxWidth: '100%',
             flex: 1,
-            '@md': { maxWidth: 445, width: '100%' },
+            width: '100%',
+            '@md': { maxWidth: 445 },
             position: 'relative',
             '@sm': {
               '>button': {
@@ -255,7 +256,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
           <Flex justify="between" align="center" css={{ mb: 20 }}>
             <Flex align="center" css={{ mr: '$2', gap: '$2' }}>
               <Link
-                href={`/collection/${router.query.chain}/${collectionId}`}
+                href={`/collection/${router.query.chain}/${collection?.id}`}
                 legacyBehavior={true}
               >
                 <Anchor
@@ -375,7 +376,7 @@ const IndexPage: NextPage<Props> = ({ id, collectionId, ssr }) => {
               <RarityRank
                 token={token}
                 collection={collection}
-                collectionAttributes={ssr.attributes.attributes}
+                collectionAttributes={ssr.attributes?.attributes}
               />
               <PriceData token={token} />
               {isMounted && (
@@ -446,7 +447,7 @@ export const getStaticProps: GetStaticProps<{
   ssr: {
     collection: paths['/collections/v5']['get']['responses']['200']['schema']
     tokens: paths['/tokens/v5']['get']['responses']['200']['schema']
-    attributes: paths['/collections/{collection}/attributes/all/v2']['get']['responses']['200']['schema']
+    attributes?: paths['/collections/{collection}/attributes/all/v2']['get']['responses']['200']['schema']
   }
 }> = async ({ params }) => {
   let collectionId = params?.contract?.toString()
@@ -455,9 +456,11 @@ export const getStaticProps: GetStaticProps<{
     supportedChains.find((chain) => params?.chain === chain.routePrefix) ||
     DefaultChain
 
+  const contract = collectionId ? collectionId?.split(':')[0] : undefined
+
   let collectionQuery: paths['/collections/v5']['get']['parameters']['query'] =
     {
-      id: collectionId,
+      contract: contract,
       includeTopBid: true,
       normalizeRoyalties: NORMALIZE_ROYALTIES,
     }
@@ -474,7 +477,6 @@ export const getStaticProps: GetStaticProps<{
     headers
   )
   const collection: Props['ssr']['collection'] = collectionsResponse['data']
-  const contract = collectionId ? collectionId?.split(':')[0] : undefined
 
   let tokensQuery: paths['/tokens/v5']['get']['parameters']['query'] = {
     tokens: [`${contract}:${id}`],
@@ -491,13 +493,17 @@ export const getStaticProps: GetStaticProps<{
 
   const tokens: Props['ssr']['tokens'] = tokensResponse['data']
 
-  const attributesResponse = await fetcher(
-    `${reservoirBaseUrl}/collections/${collectionId}/attributes/all/v2`,
-    {},
-    headers
-  )
-
-  const attributes: Props['ssr']['attributes'] = attributesResponse['data']
+  let attributes: Props['ssr']['attributes'] | undefined
+  try {
+    const attributesResponse = await fetcher(
+      `${reservoirBaseUrl}/collections/${collectionId}/attributes/all/v2`,
+      {},
+      headers
+    )
+    attributes = attributesResponse['data']
+  } catch (e) {
+    console.log('Failed to load attributes')
+  }
 
   return {
     props: { collectionId, id, ssr: { collection, tokens, attributes } },

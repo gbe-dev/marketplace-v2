@@ -26,6 +26,7 @@ import { Address } from 'wagmi'
 import { useMarketplaceChain } from 'hooks'
 import { COLLECTION_SET_ID, COMMUNITY } from 'pages/_app'
 import wrappedContracts from 'utils/wrappedContracts'
+import { NAVBAR_HEIGHT } from 'components/navbar'
 
 type Props = {
   address: Address | undefined
@@ -36,9 +37,7 @@ const desktopTemplateColumns = '1.25fr repeat(3, .75fr) 1.5fr'
 
 export const TokenTable: FC<Props> = ({ address, filterCollection }) => {
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {
-    rootMargin: '0px 0px 300px 0px',
-  })
+  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {})
 
   let tokenQuery: Parameters<typeof useUserTokens>['1'] = {
     limit: 20,
@@ -65,7 +64,7 @@ export const TokenTable: FC<Props> = ({ address, filterCollection }) => {
     if (isVisible) {
       fetchNextPage()
     }
-  }, [loadMoreObserver?.isIntersecting])
+  }, [loadMoreObserver?.isIntersecting, isFetchingPage])
 
   return (
     <>
@@ -138,7 +137,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
         }}
       >
         <Link
-          href={`/collection/${routePrefix}/${token?.token?.collection?.id}/${token?.token?.tokenId}`}
+          href={`/collection/${routePrefix}/${token?.token?.contract}/${token?.token?.tokenId}`}
         >
           <Flex align="center">
             {imageSrc && (
@@ -181,7 +180,6 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
               amount={token?.token?.collection?.floorAskPrice}
               textStyle="subtitle2"
               logoHeight={14}
-              css={{ mb: '$3' }}
             />
             <List
               token={token as ReturnType<typeof useTokens>['data'][0]}
@@ -193,6 +191,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
                 px: '42px',
                 backgroundColor: '$gray3',
                 color: '$gray12',
+                mt: '$2',
                 '&:hover': {
                   backgroundColor: '$gray4',
                 },
@@ -208,7 +207,6 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
               amount={token?.token?.topBid?.price?.netAmount?.native}
               textStyle="subtitle2"
               logoHeight={14}
-              css={{ mb: '$3' }}
             />
             {token?.token?.topBid?.price?.amount?.decimal && (
               <AcceptBid
@@ -222,6 +220,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
                   px: '32px',
                   backgroundColor: '$primary9',
                   color: 'white',
+                  mt: '$2',
                   '&:hover': {
                     backgroundColor: '$primary10',
                   },
@@ -247,7 +246,7 @@ const TokenTableRow: FC<TokenTableRowProps> = ({ token, mutate }) => {
     >
       <TableCell css={{ minWidth: 0 }}>
         <Link
-          href={`/collection/${routePrefix}/${token?.token?.collection?.id}/${token?.token?.tokenId}`}
+          href={`/collection/${routePrefix}/${token?.token?.contract}/${token?.token?.tokenId}`}
         >
           <Flex align="center">
             {imageSrc && (
@@ -352,6 +351,9 @@ const TableHeading = () => (
       display: 'none',
       '@md': { display: 'grid' },
       gridTemplateColumns: desktopTemplateColumns,
+      position: 'sticky',
+      top: NAVBAR_HEIGHT,
+      backgroundColor: '$neutralBg',
     }}
   >
     <TableCell>
