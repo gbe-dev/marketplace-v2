@@ -89,14 +89,6 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
     limit: 100,
   }
 
- /* if (COLLECTION_SET_ID) {
-    collectionQuery.collectionsSetId = COLLECTION_SET_ID
-    tokenQuery.collectionsSetId = COLLECTION_SET_ID
-  } else if (COMMUNITY) {
-    collectionQuery.community = COMMUNITY
-    tokenQuery.community = COMMUNITY
-  }*/
-
   const ssrTokens = ssr.tokens[marketplaceChain.id]
     ? [ssr.tokens[marketplaceChain.id]]
     : undefined
