@@ -17,6 +17,7 @@ import fetcher from 'utils/fetcher'
 import { NORMALIZE_ROYALTIES, COLLECTION_SET_ID, COMMUNITY } from './_app'
 import supportedChains from 'utils/chains'
 import { useIntersectionObserver } from 'usehooks-ts'
+import GlobalFooter from "../components/common/GlobalFooter";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -163,8 +164,8 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
           )}
           {!showViewAllButton && <Box ref={loadMoreRef}></Box>}
         </Flex>
-        <Footer />
       </Box>
+      <GlobalFooter />
     </Layout>
   )
 }
