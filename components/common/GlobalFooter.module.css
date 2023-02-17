@@ -1,0 +1,503 @@
+.GlobalFooter {
+    position: relative;
+    width: 100%;
+    min-height: 55vh;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    align-content: space-between;
+    overflow: hidden;
+    background-color: #ef84e3;
+    background-image: linear-gradient(90deg, #ef84e3, #afcdf7);
+    color: #000000;
+}
+
+@media (max-width: 767px) {
+    .GlobalFooter {
+        min-height: 75vh
+    }
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+}
+
+.GlobalFooter__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    left: 16px;
+    width: calc(100% - 16px * 2);
+    height: 100%;
+    padding-bottom: calc(.69vw + 16.2069px)
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter__inner {
+        left: 48px;
+        width: calc(100% - 48px * 2);
+    }
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__inner {
+        padding-bottom: 30px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__inner {
+        padding-bottom: 20px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerForm {
+    padding-top: calc(1.379vw + 72.41379px)
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerForm {
+        padding-top: 100px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerForm {
+        padding-top: 80px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerForm p {
+    font-style: normal;
+    font-family: ABCMonGrotesk, sans-serif;
+    font-weight: 400;
+    line-height: 1;
+    --line-height: 1;
+    font-size: calc(2.069vw + 18.62069px);
+    letter-spacing: -.03em;
+    margin-bottom: calc(.69vw + 26.2069px)
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerForm p {
+        font-size: 60px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerForm p {
+        font-size: 30px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerForm p em {
+    font-style: normal
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerForm p {
+        margin-bottom: 40px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerForm p {
+        margin-bottom: 30px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerForm p strong {
+    font-style: normal;
+    font-family: ABCMonGroteskMedium, sans-serif;
+    font-weight: 600;
+    line-height: 1;
+    --line-height: 1;
+    font-size: calc(2.069vw + 18.62069px);
+    letter-spacing: -.03em
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerForm p strong {
+        font-size: 60px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerForm p strong {
+        font-size: 30px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerForm p strong em {
+    font-style: normal
+}
+
+.GlobalFooter .GlobalFooter__innerLinks {
+    border-top: 1px solid;
+    display: grid;
+    box-sizing: border-box;
+    column-gap: 16px;
+    grid-template-columns:repeat(8, 1fr);
+    font-style: normal;
+    font-family: ABCMonGrotesk, sans-serif;
+    font-weight: 400;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em;
+    padding-top: calc(.276vw + 4.48276px)
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        grid-template-columns:repeat(12, 1fr);
+        --six-cols: 12;
+    }
+}
+
+@media (min-width: 1920px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        grid-template-columns:repeat(24, 1fr);
+    }
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerLinks em {
+    font-style: normal
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        padding-top: 10px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerLinks {
+        padding-top: 6px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerLinks .linkColumn {
+    grid-column: 1/-1
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter .GlobalFooter__innerLinks .linkColumn {
+        grid-column: span 3
+    }
+}
+
+@media (min-width: 1920px) {
+    .GlobalFooter .GlobalFooter__innerLinks .linkColumn {
+        grid-column: span 6
+    }
+}
+
+@media (max-width: 1023px) {
+    .GlobalFooter .GlobalFooter__innerLinks .linkColumn:not(:last-of-type) {
+        margin-bottom: 20px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerLinks .linkColumn.no-links {
+    margin-bottom: 0
+}
+
+.GlobalFooter .GlobalFooter__innerLinks a {
+    display: block;
+    transition: color .3s ease;
+    font-style: normal;
+    font-family: ABCMonGroteskMedium, sans-serif;
+    font-weight: 600;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter .GlobalFooter__innerLinks a {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter .GlobalFooter__innerLinks a {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerLinks a em {
+    font-style: normal
+}
+
+@media (hover: hover) {
+    .GlobalFooter .GlobalFooter__innerLinks a:hover {
+        color: #404040
+    }
+}
+
+.GlobalFooter .GlobalFooter__innerLinks ul {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap
+}
+
+.GlobalFooter .GlobalFooter__innerLinks ul li:not(:last-of-type) {
+    margin-right: .5rem
+}
+
+.GlobalFooter .GlobalFooter__innerLinks .page-links ul {
+    display: block
+}
+
+.GlobalFooter .GlobalFooter__innerForm, .GlobalFooter .GlobalFooter__innerLinks, .GlobalFooter .GlobalFooter__innerTitle {
+    grid-column: span 8
+}
+
+.GlobalFooter.active {
+    transform: scale(1);
+    clip-path: inset(0 round 10px)
+}
+
+.GlobalFooter__innerForm .formWrapper form {
+    width: 100%;
+    display: flex;
+    flex-direction: column
+}
+
+.GlobalFooter__innerForm .formWrapper form .mc4wp-form-fields {
+    width: 100%;
+    display: grid;
+    box-sizing: border-box;
+    column-gap: 16px;
+    grid-template-columns:repeat(8, 1fr)
+}
+
+.GlobalFooter__innerForm .formWrapper form .mc4wp-response {
+    margin-top: 50px
+}
+
+.GlobalFooter__innerForm .formWrapper form .mc4wp-response:empty {
+    display: none
+}
+
+.GlobalFooter__innerForm .formWrapper form .mc4wp-response p {
+    font-style: normal;
+    font-family: ABCMonGrotesk, sans-serif;
+    font-weight: 400;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__innerForm .formWrapper form .mc4wp-response p {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__innerForm .formWrapper form .mc4wp-response p {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter__innerForm .formWrapper form .mc4wp-response p em {
+    font-style: normal
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=email] {
+    grid-column: 1/-1;
+    border: 0;
+    border-bottom: 1px solid #000;
+    background-color: transparent;
+    padding: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    font-style: normal;
+    font-family: ABCMonGroteskSemiMono, monospace;
+    font-variant-numeric: slashed-zero;
+    font-weight: 400;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=email] em {
+    font-style: normal
+}
+
+@media (max-width: 1023px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        margin-bottom: 20px
+    }
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        grid-column: span 6
+    }
+}
+
+@media (min-width: 1440px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        grid-column: span 3
+    }
+}
+
+@media (min-width: 1920px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email] {
+        grid-column: span 6
+    }
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=email]:focus {
+    outline: none
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=email]::placeholder {
+    color: rgba(0, 0, 0, .15);
+    font-style: normal;
+    font-family: ABCMonGroteskSemiMono, monospace;
+    font-variant-numeric: slashed-zero;
+    font-weight: 400;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email]::placeholder {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=email]::placeholder {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=email]::placeholder em {
+    font-style: normal
+}
+
+.GlobalFooter__innerForm .formWrapper form input:-webkit-autofill, .GlobalFooter__innerForm .formWrapper form input:-webkit-autofill:focus, .GlobalFooter__innerForm .formWrapper form input:-webkit-autofill:hover, .GlobalFooter__innerForm .formWrapper form select:-webkit-autofill, .GlobalFooter__innerForm .formWrapper form select:-webkit-autofill:focus, .GlobalFooter__innerForm .formWrapper form select:-webkit-autofill:hover, .GlobalFooter__innerForm .formWrapper form textarea:-webkit-autofill, .GlobalFooter__innerForm .formWrapper form textarea:-webkit-autofill:focus, .GlobalFooter__innerForm .formWrapper form textarea:-webkit-autofill:hover {
+    -webkit-box-shadow: 0 0 0 1000px rgba(255, 0, 0, 0) inset
+}
+
+.GlobalFooter__innerForm .formWrapper form input:-webkit-autofill {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #191919
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=submit] {
+    flex: 0 1 auto;
+    outline: none;
+    background-color: #fffdfc;
+    color: #191919;
+    border-radius: 4px;
+    border: 1px solid #191919;
+    cursor: pointer;
+    padding: 0 10px;
+    white-space: nowrap;
+    height: calc(.828vw + 17.44828px);
+    font-style: normal;
+    font-family: ABCMonGrotesk, sans-serif;
+    font-weight: 400;
+    line-height: 1.25;
+    --line-height: 1.25;
+    font-size: calc(.414vw + 11.72414px);
+    letter-spacing: -.01em;
+    transition: all .2s ease 0s;
+    background-color: transparent;
+    box-shadow: none;
+    grid-column: 1/-1;
+    text-transform: unset;
+    width: 107px
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        height: 34px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        height: 22px
+    }
+}
+
+@media (min-width: 2000px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        font-size: 20px
+    }
+}
+
+@media (max-width: 549px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        font-size: 14px
+    }
+}
+
+.GlobalFooter__innerForm .formWrapper form input[type=submit] em {
+    font-style: normal
+}
+
+@media (hover: hover) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit]:hover {
+        color: #fffdfc;
+        background-color: #191919
+    }
+}
+
+@media (min-width: 1024px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        grid-column: span 6
+    }
+}
+
+@media (min-width: 1440px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        grid-column: 4/span 3
+    }
+}
+
+@media (min-width: 1920px) {
+    .GlobalFooter__innerForm .formWrapper form input[type=submit] {
+        grid-column: 7/span 3
+    }
+}
