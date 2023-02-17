@@ -51,6 +51,7 @@ import { spin } from 'components/common/LoadingSpinner'
 import Head from 'next/head'
 import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
 import { collectionUrls } from 'utils/collectionUrls'
+import GlobalFooter from "components/common/GlobalFooter";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -437,6 +438,7 @@ console.log("OS" + tokenExtra)
           )}
         </Flex>
       </Flex>
+      <GlobalFooter />
     </Layout>
   )
 }
