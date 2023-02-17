@@ -374,13 +374,6 @@ export const getStaticProps: GetStaticProps<{
       limit: 100,
     }
 
-  if (COLLECTION_SET_ID) {
-    tokensQuery.collectionsSetId = COLLECTION_SET_ID
-    collectionsQuery.collectionsSetId = COLLECTION_SET_ID
-  } else if (COMMUNITY) {
-    tokensQuery.community = COMMUNITY
-    collectionsQuery.community = COMMUNITY
-  }*/
 
   const promises: ReturnType<typeof fetcher>[] = []
 
