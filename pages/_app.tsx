@@ -1,4 +1,4 @@
-import 'fonts/inter.css'
+import { Inter } from '@next/font/google'
 import type { AppContext, AppProps } from 'next/app'
 import { default as NextApp } from 'next/app'
 import { ThemeProvider, useTheme } from 'next-themes'
@@ -28,6 +28,10 @@ import supportedChains from 'utils/chains'
 import { useMarketplaceChain } from 'hooks'
 import ChainContextProvider from 'context/ChainContextProvider'
 import AnalyticsProvider from 'components/AnalyticsProvider'
+
+const inter = Inter({
+  subsets: ['latin'],
+})
 
 export const NORMALIZE_ROYALTIES = process.env.NEXT_PUBLIC_NORMALIZE_ROYALTIES
   ? process.env.NEXT_PUBLIC_NORMALIZE_ROYALTIES === 'true'

@@ -1022,6 +1022,11 @@
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.0.6.tgz#3fcab11ffbe95bff127827d9f7f3139bc5e6adff"
   integrity sha512-yceT6DCHKqPRS1cAm8DHvDvK74DLIkDQdm5iV+GnIts8h0QbdHvkUIkdOvQoOODgpr6018skbmSQp12z5OWIQQ==
 
+"@next/font@^13.1.6":
+  version "13.1.6"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.1.6.tgz#2bf99e3321ec9b4d65781c0d0ebff072e8752e1a"
+  integrity sha512-AITjmeb1RgX1HKMCiA39ztx2mxeAyxl4ljv2UoSBUGAbFFMg8MO7YAvjHCgFhD39hL7YTbFjol04e/BPBH5RzQ==
+
 "@next/swc-android-arm-eabi@13.0.6":
   version "13.0.6"
   resolved "https://registry.yarnpkg.com/@next/swc-android-arm-eabi/-/swc-android-arm-eabi-13.0.6.tgz#c971e5a3f8aae875ac1d9fdb159b7e126d8d98d5"
@@ -1746,10 +1751,10 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@rainbow-me/rainbowkit@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.8.1.tgz#de93b55a4629cdd33a9acf6a8699a7cd70b29ccd"
-  integrity sha512-A8BjihvgCY/xjQWOpqgOce+uO4mmIV4Qlo3XMF87kk5WNmyLLaPx2oYTJQz1uOinWE77h4G0HozJr5wnrermgw==
+"@rainbow-me/rainbowkit@^0.9":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.9.0.tgz#5fc10d799fc59e8992bd7195f955509a81c87b16"
+  integrity sha512-wKG9vrO3LFehyzv7RAP3iHGeSENueZ8xSkUyszq9xRKRUM+4ANzIsj9lJ3nkXK9Vm6Y+g/pefmcCrIK+PpqO9w==
   dependencies:
     "@vanilla-extract/css" "1.9.1"
     "@vanilla-extract/dynamic" "2.0.2"
@@ -1770,10 +1775,10 @@
   dependencies:
     "@react-hookz/deep-equal" "^1.0.3"
 
-"@reservoir0x/reservoir-kit-ui@0.8.8":
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/@reservoir0x/reservoir-kit-ui/-/reservoir-kit-ui-0.8.8.tgz#b70d26170668e6be3f83a8b76f41c42578f18a3c"
-  integrity sha512-GLsgAXIIsGA0SJ65dITVa+jkxbbR8VoTnZHKdMThIay8A4ZDbycO7pNHVdWudF5ynapaaC9QeIFlS1jn6aU1Pg==
+"@reservoir0x/reservoir-kit-ui@0.8.12":
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/@reservoir0x/reservoir-kit-ui/-/reservoir-kit-ui-0.8.12.tgz#d0fba82e2c7132788a87a8b394d5bd58292e98ad"
+  integrity sha512-AhjUsJE2N/+4Ei7kmlUNk3VnU19T3J2RLVxGJMV5V59koXcrghHkXAAjAoG7OWqL285Lew65pxEIrx3OV/T2EA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.1.1"
     "@fortawesome/free-solid-svg-icons" "^6.1.1"
@@ -1786,7 +1791,7 @@
     "@radix-ui/react-switch" "1.0.0"
     "@radix-ui/react-toggle-group" "^1.0.0"
     "@react-hookz/web" "^19.2.0"
-    "@reservoir0x/reservoir-sdk" "0.3.4"
+    "@reservoir0x/reservoir-sdk" "0.3.6"
     "@stitches/react" "^1.2.8"
     dayjs "^1.11.4"
     flatpickr "^4.6.13"
@@ -1794,10 +1799,10 @@
     react-flatpickr "^3.10.13"
     swr "2.0.1"
 
-"@reservoir0x/reservoir-sdk@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@reservoir0x/reservoir-sdk/-/reservoir-sdk-0.3.4.tgz#e176d596540be0b9987d2a188102b2cb056f0fd8"
-  integrity sha512-6BTxiddR0VvEJ3eDveAZ15/lufPGcmOsqQr0xiogglAjDHDVyyX8zwW7gjPEoIodsU0YDPvbAbyuMO8z6WJoDg==
+"@reservoir0x/reservoir-sdk@0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@reservoir0x/reservoir-sdk/-/reservoir-sdk-0.3.6.tgz#56023faf87fd1acb92b4696ca7bca1d1161a6cce"
+  integrity sha512-iGfAUmNrqnlVE3RRARfJhjYTd0bhNAMFpuVEOF1xryJ9qffOlXadQP+wlNCFi0sJ+mJkZh5zbNOBOUGy4iqyjA==
   dependencies:
     axios "^0.27.2"
 
@@ -4300,18 +4305,6 @@ react-hotkeys-hook@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.0.4.tgz#41675ce5f82cf1a978e89e16461242f2cd132e81"
   integrity sha512-3w8Sk3ElOOv8+e8YreXlF4fl57iHcJ7GacocSKvvVRhGZDBzTfOe+DKz31ogtYJx7n9PRW5wMlaw2GDKhvUJeA==
-
-react-infinite-scroll-hook@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/react-infinite-scroll-hook/-/react-infinite-scroll-hook-4.0.4.tgz#616e66ba1de6421f74cd37d652e5b8c26c886373"
-  integrity sha512-fCjG9xwCfnV9GcAHVz9rXGnLqO55fcYsbeshSxgEH2biF8fVFHmfzZrfX4iTzoOWO1Rrz5hxrK4bBcqL5fAy9Q==
-  dependencies:
-    react-intersection-observer-hook "^2.0.6"
-
-react-intersection-observer-hook@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-intersection-observer-hook/-/react-intersection-observer-hook-2.0.6.tgz#f7c416002c2ec8e763841849c666e650f010c034"
-  integrity sha512-NTx+4Qat1tS9Bn4CXa6YgmbxLGcxFttV94Us7ZUEZ4mIZD3XaCpnm6U/FU35c6cJOMIfc7UfSzpju69ckfmb+Q==
 
 react-is@^16.13.1:
   version "16.13.1"

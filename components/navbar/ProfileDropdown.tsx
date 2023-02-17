@@ -73,14 +73,13 @@ export const ProfileDropdown: FC = () => {
           />
         </Flex>
       </DropdownMenuItem>
-      <DropdownMenuItem>
+      <DropdownMenuItem onClick={() => disconnect()}>
         <Flex
           justify="between"
           align="center"
           css={{
             cursor: 'pointer',
           }}
-          onClick={() => disconnect()}
         >
           <Text style="body1" css={{ color: '$gray1', weight: '1000' }}>Logout</Text>
           <Box css={{ color: '$gray1' }}>

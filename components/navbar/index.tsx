@@ -67,10 +67,9 @@ const Navbar = () => {
         </Flex>
       </Box>
       <Flex align="center" css={{ gap: '$3' }}>
-      {!isSix ?
-        <MobileSearch /> : null
-      }
+        <MobileSearch />
         <ChainSwitcher />
+        <ThemeSwitcher />
         <HamburgerMenu />
       </Flex>
     </Flex>
