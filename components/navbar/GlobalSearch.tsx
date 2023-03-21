@@ -9,49 +9,83 @@ import {
   ElementRef,
   ComponentPropsWithoutRef,
   FC,
+  useMemo,
 } from 'react'
 
 import { useDebounce } from 'usehooks-ts'
 import { useMediaQuery } from 'react-responsive'
 
 import Link from 'next/link'
-import { paths } from '@reservoir0x/reservoir-sdk'
-import { useMarketplaceChain } from 'hooks'
 import LoadingSpinner from 'components/common/LoadingSpinner'
 import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
+import { SearchCollection } from 'pages/api/globalSearch'
+import { formatNumber } from 'utils/numbers'
 
 type Props = {
-  collection: NonNullable<
-    paths['/search/collections/v1']['get']['responses']['200']['schema']['collections']
-  >[0]
+  collection: SearchCollection
+  handleSelectResult: (result: SearchCollection) => void
 }
 
-const CollectionItem: FC<Props> = ({ collection }) => {
-  const { routePrefix } = useMarketplaceChain()
+const CollectionItem: FC<Props> = ({ collection, handleSelectResult }) => {
+  const volume = useMemo(
+    () =>
+      collection.allTimeVolume ? formatNumber(collection.allTimeVolume) : 0,
+    [collection.allTimeVolume]
+  )
 
   return (
-    <Link href={`/collection/${routePrefix}/${collection.collectionId}`}>
+    <Link
+      href={`/collection/${collection.chainName}/${collection.collectionId}`}
+      style={{ overflow: 'hidden', width: '100%', minWidth: 0 }}
+      onClick={() => handleSelectResult(collection)}
+    >
       <Flex
         css={{
           p: '$2',
-          gap: '$2',
+          gap: '$3',
           cursor: 'pointer',
           '&:hover': {
             background: '$gray4',
           },
+          minWidth: 0,
+          width: '100%',
         }}
         align="center"
       >
         <img
           src={collection.image}
-          style={{ width: 32, height: 32, borderRadius: 4 }}
+          style={{ width: 36, height: 36, borderRadius: 4 }}
         />
-        <Text style="subtitle1" ellipsify>
-          {collection.name}
-        </Text>
-        <OpenSeaVerified
-          openseaVerificationStatus={collection?.openseaVerificationStatus}
-        />
+        <Flex direction="column" css={{ minWidth: 0 }}>
+          <Flex align="center" css={{ gap: '$1' }}>
+            <Text style="subtitle1" ellipsify>
+              {collection.name}
+            </Text>
+            <OpenSeaVerified
+              openseaVerificationStatus={collection?.openseaVerificationStatus}
+            />
+          </Flex>
+          <Flex align="center" css={{ gap: '$1' }}>
+            <Box css={{ height: 12, minWidth: 'max-content' }}>
+              <img src={collection.chainIcon} style={{ height: 12 }} />
+            </Box>
+            {collection.tokenCount !== undefined && (
+              <Text style="subtitle3" color="subtle">
+                {collection.tokenCount} items
+              </Text>
+            )}
+          </Flex>
+        </Flex>
+        {collection.volumeCurrencySymbol && (
+          <Text
+            style="subtitle2"
+            color="subtle"
+            css={{ marginLeft: 'auto', flexShrink: 0 }}
+          >
+            {volume} {collection.volumeCurrencySymbol}
+          </Text>
+        )}
       </Flex>
     </Link>
   )
@@ -69,12 +103,28 @@ type WalletItemProps = {
 
 const WalletItem: FC<WalletItemProps> = ({ wallet }) => {
   return (
-    <Link href={`/profile/${wallet.name}`}>
-      <Flex css={{ p: '$2', gap: '$4' }} align="center">
-        <img
-          src={wallet.avatar as string}
-          style={{ width: 32, height: 32, borderRadius: 4 }}
-        />
+    <Link href={`/profile/${wallet.address}`}>
+      <Flex
+        css={{
+          p: '$2',
+          gap: '$4',
+          '&:hover': {
+            background: '$gray4',
+          },
+        }}
+        align="center"
+      >
+        {wallet.avatar ? (
+          <img
+            src={wallet.avatar as string}
+            style={{ width: 32, height: 32, borderRadius: 4 }}
+          />
+        ) : (
+          <Jazzicon
+            diameter={32}
+            seed={jsNumberForAddress(wallet.address as string)}
+          />
+        )}
         <Text style="subtitle1">{wallet.displayName}</Text>
       </Flex>
     </Link>
@@ -86,11 +136,20 @@ type SearchResultProps = {
     type: 'collection' | 'wallet'
     data: any
   }
+  handleSelectResult: (result: SearchCollection) => void
 }
 
-const SearchResult: FC<SearchResultProps> = ({ result }) => {
+const SearchResult: FC<SearchResultProps> = ({
+  result,
+  handleSelectResult,
+}) => {
   if (result.type == 'collection') {
-    return <CollectionItem collection={result.data} />
+    return (
+      <CollectionItem
+        collection={result.data}
+        handleSelectResult={handleSelectResult}
+      />
+    )
   } else {
     return <WalletItem wallet={result.data} />
   }
@@ -103,19 +162,22 @@ const GlobalSearch = forwardRef<
   const [searching, setSearching] = useState(false)
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
+  const [recentResults, setRecentResults] = useState<SearchCollection[]>([])
   const [showSearchBox, setShowSearchBox] = useState(false)
 
+  const hasResults = results.length > 0
+  const hasRecentResults = recentResults.length > 0
+
   const debouncedSearch = useDebounce(search, 500)
-  const marketplaceChain = useMarketplaceChain()
 
   const isMobile = useMediaQuery({ query: '(max-width: 960px)' })
 
   useEffect(() => {
     const getSearchResults = async () => {
       setSearching(true)
-      let res = await fetch(
-        `/api/globalSearch?q=${debouncedSearch}&chainId=${marketplaceChain.id}`
-      ).then((res) => res.json())
+      let res = await fetch(`/api/globalSearch?query=${debouncedSearch}`).then(
+        (res) => res.json()
+      )
 
       setResults(res.results)
       setSearching(false)
@@ -132,6 +194,40 @@ const GlobalSearch = forwardRef<
 
     window.addEventListener('click', hideBox)
   }, [])
+
+  // Get recent search results from local storage
+  useEffect(() => {
+    const storedRecentResults = localStorage.getItem('recentResults')
+    if (storedRecentResults) {
+      let results = JSON.parse(storedRecentResults)
+
+      //migration code for results that are missing data
+      results = results.filter(
+        (result: SearchCollection) =>
+          result.allTimeVolume !== undefined &&
+          result.volumeCurrencySymbol !== undefined &&
+          result.tokenCount !== undefined
+      )
+
+      setRecentResults(results)
+    }
+  }, [])
+
+  // Add selected collection to recent results
+  const handleSelectResult = (selectedResult: SearchCollection) => {
+    if (
+      !recentResults.find(
+        (result) => result.collectionId === selectedResult.collectionId
+      )
+    ) {
+      setRecentResults([selectedResult, ...recentResults.slice(0, 4)])
+    }
+  }
+
+  // Store recently selected results in local storage
+  useEffect(() => {
+    localStorage.setItem('recentResults', JSON.stringify(recentResults))
+  }, [recentResults])
 
   return (
     <Box
@@ -217,8 +313,7 @@ const GlobalSearch = forwardRef<
       />
 
       {(showSearchBox || isMobile) &&
-        search.length > 3 &&
-        (results || searching) && (
+        (hasResults || hasRecentResults || searching) && (
           <Box
             css={{
               position: 'absolute',
@@ -230,16 +325,34 @@ const GlobalSearch = forwardRef<
               zIndex: 4,
               mt: '$2',
               border: isMobile ? '' : '1px solid $gray7',
-
-              '& div:not(:last-of-type)': {
-                borderBottom: isMobile ? '' : '1px solid $gray7',
-              },
+              overflow: 'hidden',
+              width: '100%',
             }}
           >
+            {hasRecentResults && !hasResults && search.length <= 3 && (
+              <Flex direction="column" css={{ pt: '$2' }}>
+                <Text css={{ ml: '$2' }} style="subtitle2" color="subtle">
+                  Recent
+                </Text>
+                {recentResults &&
+                  recentResults.map((result) => (
+                    <SearchResult
+                      key={result?.collectionId}
+                      result={{ type: 'collection', data: result }}
+                      handleSelectResult={handleSelectResult}
+                    />
+                  ))}
+              </Flex>
+            )}
             {results &&
               results
                 .slice(0, 8)
-                .map((result) => <SearchResult result={result} />)}
+                .map((result) => (
+                  <SearchResult
+                    result={result}
+                    handleSelectResult={handleSelectResult}
+                  />
+                ))}
 
             {searching && (
               <Flex align="center" justify="center" css={{ py: '$4' }}>
@@ -248,7 +361,7 @@ const GlobalSearch = forwardRef<
                 />
               </Flex>
             )}
-            {!searching && results.length === 0 && (
+            {!searching && results.length === 0 && search.length > 3 && (
               <Box css={{ p: '$4' }}>No Results</Box>
             )}
           </Box>

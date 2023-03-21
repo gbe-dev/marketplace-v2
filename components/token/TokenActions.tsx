@@ -1,8 +1,9 @@
 import { useTokens } from '@reservoir0x/reservoir-kit-ui'
 import { AcceptBid, Bid, BuyNow, List } from 'components/buttons'
+import AddToCart from 'components/buttons/AddToCart'
 import CancelBid from 'components/buttons/CancelBid'
 import CancelListing from 'components/buttons/CancelListing'
-import { Button, Grid } from 'components/primitives'
+import { Button, Flex, Grid } from 'components/primitives'
 import { useRouter } from 'next/router'
 import { ComponentPropsWithoutRef, FC, useState } from 'react'
 import { MutatorCallback } from 'swr'
@@ -26,8 +27,10 @@ export const TokenActions: FC<Props> = ({
 
   const queryBidId = router.query.bidId as string
   const deeplinkToAcceptBid = router.query.acceptBid === 'true'
+  const is1155 = token?.token?.kind === 'erc1155'
 
   const showAcceptOffer =
+    !is1155 &&
     token?.market?.topBid?.id !== null &&
     token?.market?.topBid?.id !== undefined &&
     isOwner &&
@@ -39,17 +42,15 @@ export const TokenActions: FC<Props> = ({
     account.isConnected &&
     token?.market?.topBid?.maker?.toLowerCase() ===
       account?.address?.toLowerCase()
-
-  const isListed = token
-    ? token?.market?.floorAsk?.id !== null && token?.token?.kind !== 'erc1155'
-    : false
+  const isListed = token ? token?.market?.floorAsk?.id !== null : false
 
   const buttonCss: ComponentPropsWithoutRef<typeof Button>['css'] = {
     width: '100%',
+    height: 52,
     justifyContent: 'center',
     minWidth: 'max-content',
     '@sm': {
-      maxWidth: '200px',
+      maxWidth: 250,
     },
   }
 
@@ -62,11 +63,11 @@ export const TokenActions: FC<Props> = ({
         width: '100%',
         '@sm': {
           gridTemplateColumns: 'repeat(2,minmax(0,1fr))',
-          width: 'max-content',
+          maxWidth: 500,
         },
       }}
     >
-      {isOwner ? (
+      {isOwner && !is1155 && (
         <List
           token={token}
           mutate={mutate}
@@ -77,8 +78,27 @@ export const TokenActions: FC<Props> = ({
               : 'List for Sale'
           }
         />
-      ) : (
-        <BuyNow token={token} mutate={mutate} buttonCss={buttonCss} />
+      )}
+      {(!isOwner || is1155) && isListed && (
+        <Flex
+          css={{ ...buttonCss, borderRadius: 8, overflow: 'hidden', gap: 1 }}
+        >
+          <BuyNow
+            token={token}
+            buttonCss={{ flex: 1, justifyContent: 'center' }}
+            buttonProps={{ corners: 'square' }}
+            mutate={mutate}
+          />
+          <AddToCart
+            token={token}
+            buttonCss={{
+              width: 52,
+              p: 0,
+              justifyContent: 'center',
+            }}
+            buttonProps={{ corners: 'square' }}
+          />
+        </Flex>
       )}
       {showAcceptOffer && (
         <AcceptBid
@@ -96,16 +116,16 @@ export const TokenActions: FC<Props> = ({
         />
       )}
 
-      {!isOwner && (
+      {(!isOwner || is1155) && (
         <Bid
           tokenId={token?.token?.tokenId}
-          collectionId={token?.token?.contract}
+          collectionId={token?.token?.collection?.id}
           mutate={mutate}
           buttonCss={buttonCss}
         />
       )}
 
-      {isTopBidder && (
+      {isTopBidder && !is1155 && (
         <CancelBid
           bidId={token?.market?.topBid?.id as string}
           mutate={mutate}
@@ -120,7 +140,7 @@ export const TokenActions: FC<Props> = ({
         />
       )}
 
-      {isOwner && isListed && (
+      {isOwner && isListed && !is1155 && (
         <CancelListing
           listingId={token?.market?.floorAsk?.id as string}
           mutate={mutate}
@@ -134,8 +154,6 @@ export const TokenActions: FC<Props> = ({
           }
         />
       )}
-
-      {/* TODO: Add to Cart */}
     </Grid>
   )
 }

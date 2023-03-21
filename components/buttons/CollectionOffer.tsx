@@ -1,4 +1,4 @@
-import { BidModal, Trait } from '@reservoir0x/reservoir-kit-ui'
+import { BidModal, BidStep, Trait } from '@reservoir0x/reservoir-kit-ui'
 import { Button } from 'components/primitives'
 import { useRouter } from 'next/router'
 import { ComponentProps, FC, useContext, useEffect, useState } from 'react'
@@ -6,7 +6,7 @@ import { useAccount, useNetwork, useSigner, useSwitchNetwork } from 'wagmi'
 import { useCollections } from '@reservoir0x/reservoir-kit-ui'
 import { SWRResponse } from 'swr'
 import { CSS } from '@stitches/react'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useModal } from 'connectkit'
 import { ToastContext } from 'context/ToastContextProvider'
 import { useMarketplaceChain } from 'hooks'
 
@@ -29,7 +29,7 @@ const CollectionOffer: FC<Props> = ({
   const { data: signer } = useSigner()
   const { chain: activeChain } = useNetwork()
   const { isDisconnected } = useAccount()
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const { addToast } = useContext(ToastContext)
   const { switchNetworkAsync } = useSwitchNetwork({
     chainId: marketplaceChain.id,
@@ -82,7 +82,7 @@ const CollectionOffer: FC<Props> = ({
           }
 
           if (!signer) {
-            openConnectModal?.()
+            setOpen(true)
           }
         }}
         {...buttonProps}
@@ -102,10 +102,8 @@ const CollectionOffer: FC<Props> = ({
               </Button>
             }
             attribute={attribute}
-            onBidComplete={() => {
-              if (mutate) {
-                mutate()
-              }
+            onClose={(data, stepData, currentStep) => {
+              if (mutate && currentStep == BidStep.Complete) mutate()
             }}
             onBidError={(error) => {
               if (error) {

@@ -1,4 +1,4 @@
-import { ListModal, useTokens } from '@reservoir0x/reservoir-kit-ui'
+import { ListModal, ListStep, useTokens } from '@reservoir0x/reservoir-kit-ui'
 import { Button } from 'components/primitives'
 import {
   cloneElement,
@@ -11,7 +11,7 @@ import {
 import { CSS } from '@stitches/react'
 import { SWRResponse } from 'swr'
 import { useAccount, useNetwork, useSigner, useSwitchNetwork } from 'wagmi'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useModal } from 'connectkit'
 import { ToastContext } from 'context/ToastContextProvider'
 import { useMarketplaceChain } from 'hooks'
 
@@ -35,7 +35,7 @@ const List: FC<Props> = ({
   mutate,
 }) => {
   const { isDisconnected } = useAccount()
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const { addToast } = useContext(ToastContext)
 
   const marketplaceChain = useMarketplaceChain()
@@ -72,7 +72,7 @@ const List: FC<Props> = ({
         }
 
         if (!signer) {
-          openConnectModal?.()
+          setOpen(true)
         }
       },
     })
@@ -83,10 +83,8 @@ const List: FC<Props> = ({
         collectionId={contract}
         tokenId={tokenId}
         currencies={listingCurrencies}
-        onListingComplete={() => {
-          if (mutate) {
-            mutate()
-          }
+        onClose={(data, stepData, currentStep) => {
+          if (mutate && currentStep == ListStep.Complete) mutate()
         }}
         onListingError={(err: any) => {
           if (err?.code === 4001) {

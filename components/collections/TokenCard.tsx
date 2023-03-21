@@ -1,10 +1,11 @@
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   extractMediaType,
   TokenMedia,
-  useTokens,
+  useDynamicTokens,
 } from '@reservoir0x/reservoir-kit-ui'
+import AddToCart from 'components/buttons/AddToCart'
 import BuyNow from 'components/buttons/BuyNow'
 import {
   Box,
@@ -19,27 +20,38 @@ import Link from 'next/link'
 import { SyntheticEvent, useContext } from 'react'
 import { MutatorCallback } from 'swr'
 import { formatNumber } from 'utils/numbers'
+import { Address } from 'wagmi'
 
 type TokenCardProps = {
-  token: ReturnType<typeof useTokens>['data'][0]
+  token: ReturnType<typeof useDynamicTokens>['data'][0]
+  address: Address
   rarityEnabled: boolean
+  addToCartEnabled?: boolean
   mutate?: MutatorCallback
   onMediaPlayed?: (
     e: SyntheticEvent<HTMLAudioElement | HTMLVideoElement, Event>
   ) => void
+  tokenCount?: string
+  orderQuantity?: number
 }
 
 export default ({
   token,
+  address,
   rarityEnabled = true,
+  addToCartEnabled = true,
   mutate,
   onMediaPlayed,
+  orderQuantity,
+  tokenCount,
 }: TokenCardProps) => {
   const { addToast } = useContext(ToastContext)
   const mediaType = extractMediaType(token?.token)
   const showPreview =
     mediaType === 'other' || mediaType === 'html' || mediaType === null
   const { routePrefix, proxyApi } = useMarketplaceChain()
+  const tokenIsInCart = token && token?.isInCart
+  const isOwner = token?.token?.owner?.toLowerCase() !== address?.toLowerCase()
 
   return (
     <Box
@@ -47,7 +59,6 @@ export default ({
         borderRadius: 8,
         overflow: 'hidden',
         background: '$neutralBgSubtle',
-
         $$shadowColor: '$colors$panelShadow',
         boxShadow: '0 8px 12px 0px $$shadowColor',
         position: 'relative',
@@ -55,20 +66,92 @@ export default ({
           transform: 'scale(1.1)',
         },
         '@sm': {
-          '&:hover button[aria-haspopup="dialog"]': {
+          '&:hover .token-button-container': {
             bottom: 0,
           },
         },
       }}
     >
+      {tokenCount && (
+        <Flex
+          justify="center"
+          align="center"
+          css={{
+            borderRadius: 8,
+            px: '$2',
+            py: '$1',
+            mr: '$2',
+            position: 'absolute',
+            left: '$2',
+            top: '$2',
+            zIndex: 1,
+            maxWidth: '50%',
+            backgroundColor: 'rgba(	38, 41, 43, 0.3)',
+          }}
+        >
+          <Text
+            css={{
+              color: '$whiteA12',
+            }}
+            ellipsify
+          >
+            x{tokenCount}
+          </Text>
+        </Flex>
+      )}
+      {orderQuantity && orderQuantity > 1 && (
+        <Flex
+          justify="center"
+          align="center"
+          css={{
+            borderRadius: 8,
+            px: '$2',
+            py: '$1',
+            mr: '$2',
+            position: 'absolute',
+            left: '$2',
+            top: '$2',
+            zIndex: 1,
+            maxWidth: '50%',
+            backgroundColor: 'rgba(	38, 41, 43, 0.3)',
+            backdropFilter: 'blur(2px)',
+          }}
+        >
+          <Text
+            css={{
+              color: '$whiteA12',
+            }}
+            ellipsify
+          >
+            x{orderQuantity}
+          </Text>
+        </Flex>
+      )}
+      <Flex
+        justify="center"
+        align="center"
+        css={{
+          borderRadius: '99999px',
+          width: 48,
+          height: 48,
+          backgroundColor: '$primary9',
+          position: 'absolute',
+          right: '$2',
+          zIndex: 1,
+          transition: `visibility 0s linear ${
+            tokenIsInCart ? '' : '250ms'
+          }, opacity 250ms ease-in-out, top 250ms ease-in-out`,
+          opacity: tokenIsInCart ? 1 : 0,
+          top: tokenIsInCart ? '$2' : 50,
+          visibility: tokenIsInCart ? 'visible' : 'hidden',
+          color: 'white',
+        }}
+      >
+        <FontAwesomeIcon icon={faCheck} width={20} height={20} />
+      </Flex>
       <Link
         passHref
-        href={`/collection/${routePrefix}/${token?.token?.collection?.id}/${token?.token?.tokenId}`}
-        onClick={(e) => {
-          if (!showPreview || (e.target as HTMLElement)?.tagName === 'BUTTON') {
-            e.preventDefault()
-          }
-        }}
+        href={`/collection/${routePrefix}/${token?.token?.contract}/${token?.token?.tokenId}`}
       >
         <Box css={{ background: '$gray3', overflow: 'hidden' }}>
           <TokenMedia
@@ -103,7 +186,7 @@ export default ({
         </Box>
       </Link>
       <Link
-        href={`/collection/${routePrefix}/${token?.token?.collection?.id}/${token?.token?.tokenId}`}
+        href={`/collection/${routePrefix}/${token?.token?.contract}/${token?.token?.tokenId}`}
       >
         <Flex
           css={{ p: '$4', minHeight: 132, cursor: 'pointer' }}
@@ -175,19 +258,21 @@ export default ({
                 textOverflow: 'ellipsis',
               }}
             >
-              <FormatCryptoCurrency
-                logoHeight={18}
-                amount={token?.market?.floorAsk?.price?.amount?.decimal}
-                address={token?.market?.floorAsk?.price?.currency?.contract}
-                textStyle="h6"
-                css={{
-                  textOverflow: 'ellipsis',
-                  minWidth: 0,
-                  with: '100%',
-                  overflow: 'hidden',
-                }}
-                maximumFractionDigits={4}
-              />
+              {token?.market?.floorAsk?.price && (
+                <FormatCryptoCurrency
+                  logoHeight={18}
+                  amount={token?.market?.floorAsk?.price?.amount?.decimal}
+                  address={token?.market?.floorAsk?.price?.currency?.contract}
+                  textStyle="h6"
+                  css={{
+                    textOverflow: 'ellipsis',
+                    minWidth: 0,
+                    with: '100%',
+                    overflow: 'hidden',
+                  }}
+                  maximumFractionDigits={4}
+                />
+              )}
             </Box>
 
             <>
@@ -198,12 +283,12 @@ export default ({
                     height: 20,
                     borderRadius: '50%',
                   }}
-                  src={`${proxyApi}/redirect/sources/${token?.market?.floorAsk?.source?.name}/logo/v2`}
+                  src={`${proxyApi}/redirect/sources/${token?.market?.floorAsk?.source?.domain}/logo/v2`}
                 />
               )}
             </>
           </Flex>
-          {token?.token?.lastBuy?.value && (
+          {token?.token?.lastBuy?.value ? (
             <Flex css={{ gap: '$2', marginTop: 'auto' }}>
               <Text css={{ color: '$gray11' }} style="subtitle3">
                 Last Sale
@@ -215,27 +300,46 @@ export default ({
                 maximumFractionDigits={4}
               />
             </Flex>
-          )}
+          ) : null}
         </Flex>
       </Link>
-      <BuyNow
-        token={token}
-        mutate={mutate}
-        buttonCss={{
-          position: 'absolute',
-          bottom: -44,
-          left: 0,
-          right: 0,
-          justifyContent: 'center',
-          transition: 'bottom 0.25s ease-in-out',
-        }}
-        buttonProps={{
-          corners: 'square',
-          onClick: (e) => {
-            // e.stopPropagation()
-          },
-        }}
-      />
+      {isOwner ? (
+        <Flex
+          className="token-button-container"
+          css={{
+            width: '100%',
+            transition: 'bottom 0.25s ease-in-out',
+            position: 'absolute',
+            bottom: -44,
+            left: 0,
+            right: 0,
+            gap: 1,
+          }}
+        >
+          <BuyNow
+            token={token}
+            mutate={mutate}
+            buttonCss={{
+              justifyContent: 'center',
+              flex: 1,
+            }}
+            buttonProps={{
+              corners: 'square',
+            }}
+          />
+          {addToCartEnabled ? (
+            <AddToCart
+              token={token}
+              buttonCss={{
+                width: 52,
+                p: 0,
+                justifyContent: 'center',
+              }}
+              buttonProps={{ corners: 'square' }}
+            />
+          ) : null}
+        </Flex>
+      ) : null}
     </Box>
   )
 }

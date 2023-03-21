@@ -14,13 +14,15 @@ import {
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAccount, useBalance, useDisconnect } from 'wagmi'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { FullscreenModal } from 'components/common/FullscreenModal'
 import { useENSResolver } from 'hooks'
+import ThemeSwitcher from 'components/navbar/ThemeSwitcher'
 
 const HamburgerMenu = () => {
   const { address, isConnected } = useAccount()
@@ -65,7 +67,12 @@ const HamburgerMenu = () => {
         >
           <Link href="/">
             <Box css={{ width: 34, cursor: 'pointer' }}>
-              <img src="/reservoirLogo.svg" style={{ width: '100%' }} />
+              <Image
+                src="/reservoirLogo.svg"
+                width={34}
+                height={39}
+                alt="Reservoir"
+              />
             </Box>
           </Link>
           <RadixDialog.Close>
@@ -121,7 +128,7 @@ const HamburgerMenu = () => {
                 </Flex>
               </Flex>
             </Link>
-            <Link href="/" legacyBehavior>
+            <Link href="/collection-rankings" legacyBehavior>
               <Text
                 style="subtitle1"
                 css={{
@@ -131,7 +138,7 @@ const HamburgerMenu = () => {
                   pt: '24px',
                 }}
               >
-                Explore
+                Collections
               </Text>
             </Link>
             <Link href="/portfolio" legacyBehavior>
@@ -274,16 +281,7 @@ const HamburgerMenu = () => {
               <FontAwesomeIcon icon={faTwitter} width={20} height={20} />
             </Button>
           </a>
-          <a href="https://discord.gg/j5K9fESNwh" target="_blank">
-            <Button
-              css={{ justifyContent: 'center', width: '44px', height: '44px' }}
-              type="button"
-              size="small"
-              color="gray3"
-            >
-              <FontAwesomeIcon icon={faDiscord} width={20} height={20} />
-            </Button>
-          </a>
+          <ThemeSwitcher />
         </Flex>
       </Flex>
     </FullscreenModal>

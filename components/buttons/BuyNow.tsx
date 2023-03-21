@@ -1,10 +1,10 @@
 import React, { ComponentProps, FC } from 'react'
 import { SWRResponse } from 'swr'
 import { useNetwork, useSigner } from 'wagmi'
-import { BuyModal, useTokens } from '@reservoir0x/reservoir-kit-ui'
+import { BuyModal, BuyStep, useTokens } from '@reservoir0x/reservoir-kit-ui'
 import { useSwitchNetwork } from 'wagmi'
 import { Button } from 'components/primitives'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useModal } from 'connectkit'
 import { CSS } from '@stitches/react'
 import { useMarketplaceChain } from 'hooks'
 
@@ -17,7 +17,7 @@ type Props = {
 
 const BuyNow: FC<Props> = ({ token, mutate, buttonCss, buttonProps = {} }) => {
   const { data: signer } = useSigner()
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const { chain: activeChain } = useNetwork()
   const marketplaceChain = useMarketplaceChain()
   const { switchNetworkAsync } = useSwitchNetwork({
@@ -48,6 +48,7 @@ const BuyNow: FC<Props> = ({ token, mutate, buttonCss, buttonProps = {} }) => {
   return !canBuy ? (
     <Button
       css={buttonCss}
+      aria-haspopup="dialog"
       color="primary"
       onClick={async () => {
         if (isInTheWrongNetwork && switchNetworkAsync) {
@@ -58,7 +59,7 @@ const BuyNow: FC<Props> = ({ token, mutate, buttonCss, buttonProps = {} }) => {
         }
 
         if (!signer) {
-          openConnectModal?.()
+          setOpen(true)
         }
       }}
       {...buttonProps}
@@ -70,10 +71,8 @@ const BuyNow: FC<Props> = ({ token, mutate, buttonCss, buttonProps = {} }) => {
       trigger={trigger}
       tokenId={token?.token?.tokenId}
       collectionId={token?.token?.collection?.id}
-      onClose={() => {
-        if (mutate) {
-          mutate()
-        }
+      onClose={(data, stepData, currentStep) => {
+        if (mutate && currentStep == BuyStep.Complete) mutate()
       }}
     />
   )

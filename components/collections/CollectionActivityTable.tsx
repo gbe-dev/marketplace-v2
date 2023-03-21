@@ -9,13 +9,12 @@ type Props = {
   >['types']
 }
 
-export const CollectionAcivityTable: FC<Props> = ({ id, activityTypes }) => {
+export const CollectionActivityTable: FC<Props> = ({ id, activityTypes }) => {
   const data = useCollectionActivity(
     { collection: id, types: activityTypes, limit: 20 },
     {
       revalidateOnMount: true,
       fallbackData: [],
-      revalidateFirstPage: true,
     }
   )
 

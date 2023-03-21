@@ -1,10 +1,10 @@
-import { BidModal } from '@reservoir0x/reservoir-kit-ui'
+import { BidModal, BidStep } from '@reservoir0x/reservoir-kit-ui'
 import { Button } from 'components/primitives'
 import { cloneElement, ComponentProps, FC, useContext } from 'react'
 import { CSS } from '@stitches/react'
 import { SWRResponse } from 'swr'
 import { useAccount, useNetwork, useSigner, useSwitchNetwork } from 'wagmi'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useModal } from 'connectkit'
 import { ToastContext } from 'context/ToastContextProvider'
 import { useMarketplaceChain } from 'hooks'
 
@@ -28,7 +28,7 @@ const Bid: FC<Props> = ({
   mutate,
 }) => {
   const { isDisconnected } = useAccount()
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const { addToast } = useContext(ToastContext)
   const marketplaceChain = useMarketplaceChain()
   const { switchNetworkAsync } = useSwitchNetwork({
@@ -59,7 +59,7 @@ const Bid: FC<Props> = ({
         }
 
         if (!signer) {
-          openConnectModal?.()
+          setOpen(true)
         }
       },
     })
@@ -70,10 +70,8 @@ const Bid: FC<Props> = ({
         collectionId={collectionId}
         trigger={trigger}
         openState={openState}
-        onBidComplete={() => {
-          if (mutate) {
-            mutate()
-          }
+        onClose={(data, stepData, currentStep) => {
+          if (mutate && currentStep == BidStep.Complete) mutate()
         }}
         onBidError={(error) => {
           if (error) {

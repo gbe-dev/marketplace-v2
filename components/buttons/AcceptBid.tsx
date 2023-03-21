@@ -1,10 +1,14 @@
-import { AcceptBidModal, useTokens } from '@reservoir0x/reservoir-kit-ui'
+import {
+  AcceptBidModal,
+  AcceptBidStep,
+  useTokens,
+} from '@reservoir0x/reservoir-kit-ui'
 import { cloneElement, ComponentProps, FC, ReactNode, useContext } from 'react'
 import { CSS } from '@stitches/react'
 import { SWRResponse } from 'swr'
 import { Button } from 'components/primitives'
 import { useAccount, useNetwork, useSigner, useSwitchNetwork } from 'wagmi'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useModal } from 'connectkit'
 import { ToastContext } from '../../context/ToastContextProvider'
 import { useMarketplaceChain } from 'hooks'
 
@@ -32,7 +36,7 @@ const AcceptBid: FC<Props> = ({
   mutate,
 }) => {
   const { isDisconnected } = useAccount()
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const { addToast } = useContext(ToastContext)
 
   const marketplaceChain = useMarketplaceChain()
@@ -64,7 +68,7 @@ const AcceptBid: FC<Props> = ({
         }
 
         if (!signer) {
-          openConnectModal?.()
+          setOpen(true)
         }
       },
     })
@@ -76,10 +80,8 @@ const AcceptBid: FC<Props> = ({
         bidId={bidId}
         collectionId={collectionId}
         tokenId={token?.token?.tokenId}
-        onClose={() => {
-          if (mutate) {
-            mutate()
-          }
+        onClose={(data, stepData, currentStep) => {
+          if (mutate && currentStep == AcceptBidStep.Complete) mutate()
         }}
         onBidAcceptError={(error: any) => {
           if (error?.type === 'price mismatch') {

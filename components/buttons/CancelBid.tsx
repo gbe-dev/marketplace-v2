@@ -1,5 +1,5 @@
-import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { CancelBidModal } from '@reservoir0x/reservoir-kit-ui'
+import { useModal } from 'connectkit'
+import { CancelBidModal, CancelBidStep } from '@reservoir0x/reservoir-kit-ui'
 import { FC, ReactElement, cloneElement, useContext } from 'react'
 import { SWRResponse } from 'swr'
 import { useNetwork, useSigner, useSwitchNetwork } from 'wagmi'
@@ -15,7 +15,7 @@ type Props = {
 
 const CancelBid: FC<Props> = ({ bidId, openState, trigger, mutate }) => {
   const { addToast } = useContext(ToastContext)
-  const { openConnectModal } = useConnectModal()
+  const { setOpen } = useModal()
   const marketplaceChain = useMarketplaceChain()
   const { switchNetworkAsync } = useSwitchNetwork({
     chainId: marketplaceChain.id,
@@ -39,7 +39,7 @@ const CancelBid: FC<Props> = ({ bidId, openState, trigger, mutate }) => {
         }
 
         if (!signer) {
-          openConnectModal?.()
+          setOpen(true)
         }
       },
     })
@@ -63,10 +63,8 @@ const CancelBid: FC<Props> = ({ bidId, openState, trigger, mutate }) => {
           description: 'The transaction was not completed.',
         })
       }}
-      onClose={() => {
-        if (mutate) {
-          mutate()
-        }
+      onClose={(data, currentStep) => {
+        if (mutate && currentStep == CancelBidStep.Complete) mutate()
       }}
     />
   )

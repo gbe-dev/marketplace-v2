@@ -19,7 +19,7 @@ import { TabsList, TabsTrigger, TabsContent } from 'components/primitives/Tab'
 import * as Tabs from '@radix-ui/react-tabs'
 import {
   useCollectionActivity,
-  useTokens,
+  useDynamicTokens,
   useUserCollections,
   useUserTokens,
 } from '@reservoir0x/reservoir-kit-ui'
@@ -36,8 +36,10 @@ import { NAVBAR_HEIGHT } from 'components/navbar'
 import { DefaultChain } from 'utils/chains'
 import { useENSResolver } from 'hooks'
 import { COLLECTION_SET_ID, COMMUNITY, NORMALIZE_ROYALTIES } from 'pages/_app'
-import Head from 'next/head'
+import { Head } from 'components/Head'
 import CopyText from 'components/common/CopyText'
+import { Address, useAccount } from 'wagmi'
+import ChainToggle from 'components/common/ChainToggle'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -57,6 +59,8 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
     shortAddress,
   } = useENSResolver(address)
   ensName = resolvedEnsName ? resolvedEnsName : ensName
+  const account = useAccount()
+
   const [tokenFiltersOpen, setTokenFiltersOpen] = useState(true)
   const [activityFiltersOpen, setActivityFiltersOpen] = useState(true)
   const [filterCollection, setFilterCollection] = useState<string | undefined>(
@@ -78,9 +82,7 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
   }
 
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {
-    rootMargin: '0px 0px 300px 0px',
-  })
+  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {})
 
   const tokenQuery: Parameters<typeof useUserTokens>['1'] = {
     limit: 20,
@@ -117,9 +119,10 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
     ? [ssr.collections[marketplaceChain.id]]
     : undefined
 
-  const { data: collections } = useUserCollections(address, collectionQuery, {
-    fallbackData: filterCollection ? undefined : ssrCollections,
-  })
+  const { data: collections, isLoading: collectionsLoading } =
+    useUserCollections(address, collectionQuery, {
+      fallbackData: filterCollection ? undefined : ssrCollections,
+    })
 
   useEffect(() => {
     const isVisible = !!loadMoreObserver?.isIntersecting
@@ -134,9 +137,7 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>{`Profile - ${address}`}</title>
-      </Head>
+      <Head title={`Profile - ${address}`} />
       <Flex
         direction="column"
         css={{
@@ -148,28 +149,39 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
           },
         }}
       >
-        <Flex align="center">
-          {ensAvatar ? (
-            <Avatar size="xxl" src={ensAvatar} />
-          ) : (
-            <Jazzicon
-              diameter={64}
-              seed={jsNumberForAddress(address as string)}
-            />
-          )}
-          <Flex direction="column" css={{ ml: '$4' }}>
-            <Text style="h5">{ensName ? ensName : shortAddress}</Text>
-            <CopyText text={address as string}>
-              <Flex align="center" css={{ cursor: 'pointer' }}>
-                <Text style="subtitle1" color="subtle" css={{ mr: '$3' }}>
-                  {shortAddress}
-                </Text>
-                <Box css={{ color: '$gray10' }}>
-                  <FontAwesomeIcon icon={faCopy} width={16} height={16} />
-                </Box>
-              </Flex>
-            </CopyText>
+        <Flex
+          justify="between"
+          css={{
+            gap: '$4',
+            flexDirection: 'column',
+            alignItems: 'start',
+            '@sm': { flexDirection: 'row', alignItems: 'center' },
+          }}
+        >
+          <Flex align="center">
+            {ensAvatar ? (
+              <Avatar size="xxl" src={ensAvatar} />
+            ) : (
+              <Jazzicon
+                diameter={64}
+                seed={jsNumberForAddress(address as string)}
+              />
+            )}
+            <Flex direction="column" css={{ ml: '$4' }}>
+              <Text style="h5">{ensName ? ensName : shortAddress}</Text>
+              <CopyText text={address as string}>
+                <Flex align="center" css={{ cursor: 'pointer' }}>
+                  <Text style="subtitle1" color="subtle" css={{ mr: '$3' }}>
+                    {shortAddress}
+                  </Text>
+                  <Box css={{ color: '$gray10' }}>
+                    <FontAwesomeIcon icon={faCopy} width={16} height={16} />
+                  </Box>
+                </Flex>
+              </CopyText>
+            </Flex>
           </Flex>
+          <ChainToggle />
         </Flex>
         <Tabs.Root defaultValue="items">
           <TabsList>
@@ -193,6 +205,7 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
                 />
               ) : (
                 <TokenFilters
+                  isLoading={collectionsLoading}
                   open={tokenFiltersOpen}
                   setOpen={setTokenFiltersOpen}
                   collections={collections}
@@ -207,12 +220,15 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
                 }}
               >
                 <Flex justify="between" css={{ marginBottom: '$4' }}>
-                  {collections && collections.length > 0 && !isSmallDevice && (
-                    <FilterButton
-                      open={tokenFiltersOpen}
-                      setOpen={setTokenFiltersOpen}
-                    />
-                  )}
+                  {!collectionsLoading &&
+                    collections &&
+                    collections.length > 0 &&
+                    !isSmallDevice && (
+                      <FilterButton
+                        open={tokenFiltersOpen}
+                        setOpen={setTokenFiltersOpen}
+                      />
+                    )}
                 </Flex>
                 <Grid
                   css={{
@@ -227,22 +243,37 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
                     },
                   }}
                 >
-                  {isFetchingInitialData
+                  {isFetchingInitialData || collectionsLoading
                     ? Array(10)
                         .fill(null)
                         .map((_, index) => (
                           <LoadingCard key={`loading-card-${index}`} />
                         ))
                     : tokens.map((token, i) => {
-                        if (token)
+                        if (token) {
+                          let dynamicToken = token as ReturnType<
+                            typeof useDynamicTokens
+                          >['data'][0]
+
+                          if (dynamicToken.token) {
+                            dynamicToken.token.owner = address
+                          }
+                          dynamicToken.market = {
+                            floorAsk: token?.ownership?.floorAsk,
+                          }
                           return (
                             <TokenCard
                               key={i}
-                              token={
-                                token as ReturnType<typeof useTokens>['data'][0]
+                              token={dynamicToken}
+                              address={account.address as Address}
+                              tokenCount={
+                                token?.token?.kind === 'erc1155'
+                                  ? token.ownership?.tokenCount
+                                  : undefined
                               }
                               mutate={mutate}
                               rarityEnabled={false}
+                              addToCartEnabled={false}
                               onMediaPlayed={(e) => {
                                 if (
                                   playingElement &&
@@ -259,19 +290,26 @@ const IndexPage: NextPage<Props> = ({ address, ssr, ensName }) => {
                               }}
                             />
                           )
+                        }
                       })}
-                  <Box ref={loadMoreRef}>
+                  <Box
+                    ref={loadMoreRef}
+                    css={{
+                      display: isFetchingPage ? 'none' : 'block',
+                    }}
+                  >
                     {hasNextPage && !isFetchingInitialData && <LoadingCard />}
                   </Box>
-                  {hasNextPage && (
-                    <>
-                      {Array(10)
-                        .fill(null)
-                        .map((_, index) => (
-                          <LoadingCard key={`loading-card-${index}`} />
-                        ))}
-                    </>
-                  )}
+                  {(hasNextPage || isFetchingPage) &&
+                    !isFetchingInitialData && (
+                      <>
+                        {Array(6)
+                          .fill(null)
+                          .map((_, index) => (
+                            <LoadingCard key={`loading-card-${index}`} />
+                          ))}
+                      </>
+                    )}
                 </Grid>
                 {tokens.length === 0 && !isFetchingPage && (
                   <Flex

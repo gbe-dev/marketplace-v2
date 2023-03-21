@@ -10,6 +10,7 @@ import {
   Anchor,
   Button,
   Box,
+  Tooltip,
 } from '../primitives'
 import Image from 'next/image'
 import { useIntersectionObserver } from 'usehooks-ts'
@@ -21,8 +22,13 @@ import { useMarketplaceChain, useTimeSince } from 'hooks'
 import CancelListing from 'components/buttons/CancelListing'
 import { Address } from 'wagmi'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTag } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCircleExclamation,
+  faGasPump,
+  faTag,
+} from '@fortawesome/free-solid-svg-icons'
 import { COMMUNITY } from 'pages/_app'
+import { NAVBAR_HEIGHT } from 'components/navbar'
 
 type Props = {
   address: Address | undefined
@@ -30,15 +36,18 @@ type Props = {
 
 const desktopTemplateColumns = '1.25fr .75fr repeat(3, 1fr)'
 
+const zoneAddresses = [
+  '0xe1066481cc3b038badd0c68dfa5c8f163c3ff192', // Ethereum - 0xe1...92
+  '0x49b91d1d7b9896d28d370b75b92c2c78c1ac984a', // Goerli Address - 0x49...4a
+]
 export const ListingsTable: FC<Props> = ({ address }) => {
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {
-    rootMargin: '0px 0px 300px 0px',
-  })
+  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {})
 
   let listingsQuery: Parameters<typeof useListings>['0'] = {
     maker: address,
     includeCriteriaMetadata: true,
+    includeRawData: true,
   }
 
   if (COMMUNITY) listingsQuery.community = COMMUNITY
@@ -104,6 +113,12 @@ const ListingTableRow: FC<ListingTableRowProps> = ({ listing, mutate }) => {
   const isSmallDevice = useMediaQuery({ maxWidth: 900 })
   const { routePrefix } = useMarketplaceChain()
   const expiration = useTimeSince(listing?.expiration)
+
+  const orderZone = listing?.rawData?.zone
+  const orderKind = listing?.kind
+
+  const isOracleOrder =
+    orderKind === 'seaport-v1.4' && zoneAddresses.includes(orderZone as string)
 
   let criteriaData = listing?.criteria?.data
 
@@ -187,9 +202,31 @@ const ListingTableRow: FC<ListingTableRowProps> = ({ listing, mutate }) => {
             listingId={listing?.id as string}
             mutate={mutate}
             trigger={
-              <Button css={{ color: '$red11' }} color="gray3">
-                Cancel
-              </Button>
+              <Flex>
+                {!isOracleOrder ? (
+                  <Tooltip
+                    content={
+                      <Text style="body2" as="p">
+                        Cancelling this order requires gas.
+                      </Text>
+                    }
+                  >
+                    <Button css={{ color: '$red11' }} color="gray3">
+                      <FontAwesomeIcon
+                        color="#697177"
+                        icon={faGasPump}
+                        width="16"
+                        height="16"
+                      />
+                      Cancel
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button css={{ color: '$red11' }} color="gray3">
+                    Cancel
+                  </Button>
+                )}
+              </Flex>
             }
           />
         </Flex>
@@ -273,9 +310,31 @@ const ListingTableRow: FC<ListingTableRowProps> = ({ listing, mutate }) => {
             listingId={listing?.id as string}
             mutate={mutate}
             trigger={
-              <Button css={{ color: '$red11' }} color="gray3">
-                Cancel
-              </Button>
+              <Flex>
+                {!isOracleOrder ? (
+                  <Tooltip
+                    content={
+                      <Text style="body2" as="p">
+                        Cancelling this order requires gas.
+                      </Text>
+                    }
+                  >
+                    <Button css={{ color: '$red11' }} color="gray3">
+                      <FontAwesomeIcon
+                        color="#697177"
+                        icon={faGasPump}
+                        width="16"
+                        height="16"
+                      />
+                      Cancel
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button css={{ color: '$red11' }} color="gray3">
+                    Cancel
+                  </Button>
+                )}
+              </Flex>
             }
           />
         </Flex>
@@ -292,6 +351,9 @@ const TableHeading = () => (
       display: 'none',
       '@md': { display: 'grid' },
       gridTemplateColumns: desktopTemplateColumns,
+      position: 'sticky',
+      top: NAVBAR_HEIGHT,
+      backgroundColor: '$neutralBg',
     }}
   >
     {headings.map((heading) => (

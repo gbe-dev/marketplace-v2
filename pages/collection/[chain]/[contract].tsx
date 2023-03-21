@@ -7,8 +7,9 @@ import {
 import { Text, Flex, Box } from '../../../components/primitives'
 import {
   useCollections,
-  useTokens,
   useCollectionActivity,
+  useDynamicTokens,
+  useAttributes,
 } from '@reservoir0x/reservoir-kit-ui'
 import { paths } from '@reservoir0x/reservoir-sdk'
 import Layout from 'components/Layout'
@@ -30,7 +31,7 @@ import { useMediaQuery } from 'react-responsive'
 import { TabsList, TabsTrigger, TabsContent } from 'components/primitives/Tab'
 import * as Tabs from '@radix-ui/react-tabs'
 import { NAVBAR_HEIGHT } from 'components/navbar'
-import { CollectionAcivityTable } from 'components/collections/CollectionActivityTable'
+import { CollectionActivityTable } from 'components/collections/CollectionActivityTable'
 import { ActivityFilters } from 'components/common/ActivityFilters'
 import { MobileAttributeFilters } from 'components/collections/filters/MobileAttributeFilters'
 import { MobileActivityFilters } from 'components/common/MobileActivityFilters'
@@ -40,9 +41,11 @@ import { NORMALIZE_ROYALTIES } from 'pages/_app'
 import { faCopy, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import supportedChains, { DefaultChain } from 'utils/chains'
-import Head from 'next/head'
+import { Head } from 'components/Head'
 import CopyText from 'components/common/CopyText'
 import { OpenSeaVerified } from 'components/common/OpenSeaVerified'
+import { Address, useAccount } from 'wagmi'
+import titleCase from 'utils/titleCase'
 
 type ActivityTypes = Exclude<
   NonNullable<
@@ -57,18 +60,21 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
   const router = useRouter()
-  const [attributeFiltersOpen, setAttributeFiltersOpen] = useState(true)
+  const { address } = useAccount()
+  const [attributeFiltersOpen, setAttributeFiltersOpen] = useState(
+    ssr.hasAttributes ? true : false
+  )
   const [activityFiltersOpen, setActivityFiltersOpen] = useState(true)
   const [activityTypes, setActivityTypes] = useState<ActivityTypes>(['sale'])
+  const [initialTokenFallbackData, setInitialTokenFallbackData] = useState(true)
   const isMounted = useMounted()
   const isSmallDevice = useMediaQuery({ maxWidth: 905 }) && isMounted
+  const smallSubtitle = useMediaQuery({ maxWidth: 1150 }) && isMounted
   const [playingElement, setPlayingElement] = useState<
     HTMLAudioElement | HTMLVideoElement | null
   >()
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {
-    rootMargin: '0px 0px 300px 0px',
-  })
+  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {})
 
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -88,11 +94,12 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
 
   let collection = collections && collections[0]
 
-  let tokenQuery: Parameters<typeof useTokens>['0'] = {
+  let tokenQuery: Parameters<typeof useDynamicTokens>['0'] = {
     limit: 20,
     collection: id,
     sortBy: 'floorAskPrice',
     sortDirection: 'asc',
+    includeQuantity: true,
   }
 
   const sortDirection = router.query['sortDirection']?.toString()
@@ -117,15 +124,30 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
     data: tokens,
     mutate,
     fetchNextPage,
+    setSize,
+    resetCache,
     isFetchingInitialData,
+    isFetchingPage,
     hasNextPage,
-  } = useTokens(tokenQuery, {
-    fallbackData: [ssr.tokens],
+  } = useDynamicTokens(tokenQuery, {
+    fallbackData: initialTokenFallbackData ? [ssr.tokens] : undefined,
   })
 
-  const attributes = ssr?.attributes.attributes?.filter(
-    (attribute) => attribute.kind != 'number' && attribute.kind != 'range'
-  )
+  const attributesData = useAttributes(id)
+
+  const attributes =
+    attributesData.data?.filter(
+      (attribute) => attribute.kind != 'number' && attribute.kind != 'range'
+    ) || []
+
+  if (attributeFiltersOpen && attributesData.response && !attributes.length) {
+    setAttributeFiltersOpen(false)
+  }
+
+  let creatorRoyalties = collection?.royalties?.bps
+    ? collection?.royalties?.bps * 0.01
+    : 0
+  let chain = titleCase(router.query.chain as string)
 
   const rarityEnabledCollection = Boolean(
     collection?.tokenCount &&
@@ -134,6 +156,9 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
       attributes?.length >= 2
   )
 
+  //@ts-ignore: Ignore until we regenerate the types
+  const contractKind = collection?.contractKind?.toUpperCase()
+
   useEffect(() => {
     const isVisible = !!loadMoreObserver?.isIntersecting
     if (isVisible) {
@@ -141,31 +166,20 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
     }
   }, [loadMoreObserver?.isIntersecting])
 
+  useEffect(() => {
+    if (isMounted && initialTokenFallbackData) {
+      setInitialTokenFallbackData(false)
+    }
+  }, [router.query])
+
   return (
     <Layout>
-      <Head>
-        <title>{ssr?.collection?.collections?.[0]?.name}</title>
-        <meta
-          name="description"
-          content={ssr?.collection?.collections?.[0]?.description as string}
-        />
-        <meta
-          property="twitter:title"
-          content={ssr?.collection?.collections?.[0]?.name}
-        />
-        <meta
-          name="twitter:image"
-          content={ssr?.collection?.collections?.[0]?.banner}
-        />
-        <meta
-          property="og:title"
-          content={ssr?.collection?.collections?.[0]?.name}
-        />
-        <meta
-          property="og:image"
-          content={ssr?.collection?.collections?.[0]?.banner}
-        />
-      </Head>
+      <Head
+        ogImage={ssr?.collection?.collections?.[0]?.banner}
+        title={ssr?.collection?.collections?.[0]?.name}
+        description={ssr?.collection?.collections?.[0]?.description as string}
+      />
+
       {collection ? (
         <Flex
           direction="column"
@@ -202,26 +216,117 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                     />
                   </Flex>
 
-                  <CopyText
-                    text={collection.id as string}
-                    css={{ width: 'max-content' }}
-                  >
-                    <Flex css={{ gap: '$2', mt: '$2', width: 'max-content' }}>
-                      <Text style="body1" css={{ color: '$gray11' }} as="p">
-                        {truncateAddress(collection.id as string)}
-                      </Text>
-                      <Box css={{ color: '$gray10' }}>
-                        <FontAwesomeIcon icon={faCopy} width={16} height={16} />
+                  {!smallSubtitle && (
+                    <Flex align="end" css={{ gap: 24 }}>
+                      <CopyText
+                        text={collection.id as string}
+                        css={{ width: 'max-content' }}
+                      >
+                        <Flex css={{ gap: '$2', width: 'max-content' }}>
+                          {!isSmallDevice && (
+                            <Text style="body1" color="subtle">
+                              Collection
+                            </Text>
+                          )}
+                          <Text
+                            style="body1"
+                            color={isSmallDevice ? 'subtle' : undefined}
+                            as="p"
+                          >
+                            {truncateAddress(collection.id as string)}
+                          </Text>
+                          <Box css={{ color: '$gray10' }}>
+                            <FontAwesomeIcon
+                              icon={faCopy}
+                              width={16}
+                              height={16}
+                            />
+                          </Box>
+                        </Flex>
+                      </CopyText>
+                      <Box>
+                        <Text style="body1" color="subtle">
+                          Token Standard{' '}
+                        </Text>
+                        <Text style="body1">{contractKind}</Text>
+                      </Box>
+                      <Box>
+                        <Text style="body1" color="subtle">
+                          Chain{' '}
+                        </Text>
+                        <Text style="body1">{chain}</Text>
+                      </Box>
+                      <Box>
+                        <Text style="body1" color="subtle">
+                          Creator Earnings
+                        </Text>
+                        <Text style="body1"> {creatorRoyalties}%</Text>
                       </Box>
                     </Flex>
-                  </CopyText>
+                  )}
                 </Box>
               </Flex>
             </Flex>
             <CollectionActions collection={collection} />
           </Flex>
+          {smallSubtitle && (
+            <Grid
+              css={{
+                gap: 12,
+                mb: 24,
+                gridTemplateColumns: '1fr 1fr',
+                maxWidth: 550,
+              }}
+            >
+              <CopyText
+                text={collection.id as string}
+                css={{ width: 'max-content' }}
+              >
+                <Flex css={{ width: 'max-content' }} direction="column">
+                  <Text style="body1" color="subtle">
+                    Collection
+                  </Text>
+                  <Flex css={{ gap: '$2' }}>
+                    <Text style="body1" as="p">
+                      {truncateAddress(collection.id as string)}
+                    </Text>
+                    <Box css={{ color: '$gray10' }}>
+                      <FontAwesomeIcon icon={faCopy} width={16} height={16} />
+                    </Box>
+                  </Flex>
+                </Flex>
+              </CopyText>
+              <Flex direction="column">
+                <Text style="body1" color="subtle">
+                  Token Standard{' '}
+                </Text>
+                <Text style="body1">{contractKind}</Text>
+              </Flex>
+              <Flex direction="column">
+                <Text style="body1" color="subtle">
+                  Chain{' '}
+                </Text>
+                <Text style="body1">{chain}</Text>
+              </Flex>
+              <Flex direction="column">
+                <Text style="body1" color="subtle">
+                  Creator Earnings
+                </Text>
+                <Text style="body1"> {creatorRoyalties}%</Text>
+              </Flex>
+            </Grid>
+          )}
           <StatHeader collection={collection} />
-          <Tabs.Root defaultValue="items">
+          <Tabs.Root
+            defaultValue="items"
+            onValueChange={(value) => {
+              if (value === 'items') {
+                resetCache()
+                setSize(1)
+                mutate()
+              }
+            }}
+          >
             <TabsList>
               <TabsTrigger value="items">Items</TabsTrigger>
               <TabsTrigger value="activity">Activity</TabsTrigger>
@@ -310,6 +415,10 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                           <TokenCard
                             key={i}
                             token={token}
+                            orderQuantity={
+                              token?.market?.floorAsk?.quantityRemaining
+                            }
+                            address={address as Address}
                             mutate={mutate}
                             rarityEnabled={rarityEnabledCollection}
                             onMediaPlayed={(e) => {
@@ -328,20 +437,27 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                             }}
                           />
                         ))}
-                    <Box ref={loadMoreRef}>
-                      {hasNextPage && !isFetchingInitialData && <LoadingCard />}
+                    <Box
+                      ref={loadMoreRef}
+                      css={{
+                        display: isFetchingPage ? 'none' : 'block',
+                      }}
+                    >
+                      {(hasNextPage || isFetchingPage) &&
+                        !isFetchingInitialData && <LoadingCard />}
                     </Box>
-                    {hasNextPage && (
-                      <>
-                        {Array(10)
-                          .fill(null)
-                          .map((_, index) => (
-                            <LoadingCard key={`loading-card-${index}`} />
-                          ))}
-                      </>
-                    )}
+                    {(hasNextPage || isFetchingPage) &&
+                      !isFetchingInitialData && (
+                        <>
+                          {Array(6)
+                            .fill(null)
+                            .map((_, index) => (
+                              <LoadingCard key={`loading-card-${index}`} />
+                            ))}
+                        </>
+                      )}
                   </Grid>
-                  {tokens.length == 0 && (
+                  {tokens.length == 0 && !isFetchingPage && (
                     <Flex
                       direction="column"
                       align="center"
@@ -389,7 +505,7 @@ const CollectionPage: NextPage<Props> = ({ id, ssr }) => {
                       setOpen={setActivityFiltersOpen}
                     />
                   )}
-                  <CollectionAcivityTable
+                  <CollectionActivityTable
                     id={id}
                     activityTypes={activityTypes}
                   />
@@ -414,17 +530,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<{
   ssr: {
-    collection: paths['/collections/v5']['get']['responses']['200']['schema']
-    tokens: paths['/tokens/v5']['get']['responses']['200']['schema']
-    attributes: paths['/collections/{collection}/attributes/all/v2']['get']['responses']['200']['schema']
+    collection?: paths['/collections/v5']['get']['responses']['200']['schema']
+    tokens?: paths['/tokens/v5']['get']['responses']['200']['schema']
+    hasAttributes: boolean
   }
   id: string | undefined
 }> = async ({ params }) => {
   const id = params?.contract?.toString()
-  const { reservoirBaseUrl, apiKey } =
+  const { reservoirBaseUrl, apiKey, routePrefix } =
     supportedChains.find((chain) => params?.chain === chain.routePrefix) ||
     DefaultChain
-  const headers = {
+  const headers: RequestInit = {
     headers: {
       'x-api-key': apiKey || '',
     },
@@ -437,12 +553,11 @@ export const getStaticProps: GetStaticProps<{
       normalizeRoyalties: NORMALIZE_ROYALTIES,
     }
 
-  const collectionsResponse = await fetcher(
+  const collectionsPromise = fetcher(
     `${reservoirBaseUrl}/collections/v5`,
     collectionQuery,
     headers
   )
-  const collection: Props['ssr']['collection'] = collectionsResponse['data']
 
   let tokensQuery: paths['/tokens/v5']['get']['parameters']['query'] = {
     collection: id,
@@ -450,27 +565,52 @@ export const getStaticProps: GetStaticProps<{
     sortDirection: 'asc',
     limit: 20,
     normalizeRoyalties: NORMALIZE_ROYALTIES,
+    includeDynamicPricing: true,
+    includeAttributes: true,
+    includeQuantity: true,
   }
 
-  const tokensResponse = await fetcher(
+  const tokensPromise = fetcher(
     `${reservoirBaseUrl}/tokens/v5`,
     tokensQuery,
     headers
   )
 
-  const tokens: Props['ssr']['tokens'] = tokensResponse['data']
+  const promises = await Promise.allSettled([
+    collectionsPromise,
+    tokensPromise,
+  ]).catch(() => {})
+  const collection: Props['ssr']['collection'] =
+    promises?.[0].status === 'fulfilled' && promises[0].value.data
+      ? (promises[0].value.data as Props['ssr']['collection'])
+      : {}
+  const tokens: Props['ssr']['tokens'] =
+    promises?.[1].status === 'fulfilled' && promises[1].value.data
+      ? (promises[1].value.data as Props['ssr']['tokens'])
+      : {}
 
-  const attributesResponse = await fetcher(
-    `${reservoirBaseUrl}/collections/${id}/attributes/all/v2`,
-    {},
-    headers
-  )
+  const hasAttributes =
+    tokens?.tokens?.some(
+      (token) => (token?.token?.attributes?.length || 0) > 0
+    ) || false
 
-  const attributes: Props['ssr']['attributes'] = attributesResponse['data']
+  if (
+    collection &&
+    collection.collections?.[0].contractKind === 'erc1155' &&
+    Number(collection?.collections?.[0].tokenCount) === 1 &&
+    tokens?.tokens?.[0].token?.tokenId !== undefined
+  ) {
+    return {
+      redirect: {
+        destination: `/collection/${routePrefix}/${id}/${tokens.tokens[0].token.tokenId}`,
+        permanent: false,
+      },
+    }
+  }
 
   return {
-    props: { ssr: { collection, tokens, attributes }, id },
-    revalidate: 20,
+    props: { ssr: { collection, tokens, hasAttributes }, id },
+    revalidate: 30,
   }
 }
 

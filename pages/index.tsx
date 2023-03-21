@@ -1,21 +1,23 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { Text, Flex, Box, Button } from 'components/primitives'
-import TrendingCollectionsList from 'components/home/TrendingCollectionsList'
 import Layout from 'components/Layout'
 import { ComponentPropsWithoutRef, useState } from 'react'
-import useInfiniteScroll from 'react-infinite-scroll-hook'
-import TrendingCollectionsTimeToggle, {
-  CollectionsSortingOption,
-} from 'components/home/TrendingCollectionsTimeToggle'
 import { Footer } from 'components/home/Footer'
 import { useMediaQuery } from 'react-responsive'
 import { useMarketplaceChain, useMounted } from 'hooks'
-import LoadingSpinner from 'components/common/LoadingSpinner'
+import { useAccount } from 'wagmi'
 import { paths } from '@reservoir0x/reservoir-sdk'
 import { useCollections } from '@reservoir0x/reservoir-kit-ui'
 import fetcher from 'utils/fetcher'
 import { NORMALIZE_ROYALTIES, COLLECTION_SET_ID, COMMUNITY } from './_app'
 import supportedChains from 'utils/chains'
+import Link from 'next/link'
+import ChainToggle from 'components/common/ChainToggle'
+import CollectionsTimeDropdown, {
+  CollectionsSortingOption,
+} from 'components/common/CollectionsTimeDropdown'
+import { Head } from 'components/Head'
+import { CollectionRankingsTable } from 'components/rankings/CollectionRankingsTable'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -26,10 +28,12 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
   const [sortByTime, setSortByTime] =
     useState<CollectionsSortingOption>('1DayVolume')
   const marketplaceChain = useMarketplaceChain()
+  const { isDisconnected } = useAccount()
 
   let collectionQuery: Parameters<typeof useCollections>['0'] = {
-    limit: 12,
+    limit: 10,
     sortBy: sortByTime,
+    includeTopBid: true,
   }
 
   if (COLLECTION_SET_ID) {
@@ -38,28 +42,14 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
     collectionQuery.community = COMMUNITY
   }
 
-  const { data, hasNextPage, fetchNextPage, isFetchingPage, isValidating } =
-    useCollections(collectionQuery, {
-      fallbackData: [ssr.collections[marketplaceChain.id]],
-    })
+  const { data, isValidating } = useCollections(collectionQuery, {
+    fallbackData: [ssr.collections[marketplaceChain.id]],
+  })
 
   let collections = data || []
-  const showViewAllButton = collections.length <= 12 && hasNextPage
-  if (showViewAllButton) {
-    collections = collections?.slice(0, 12)
-  }
-
-  const [sentryRef] = useInfiniteScroll({
-    rootMargin: '0px 0px 100px 0px',
-    loading: isFetchingPage,
-    hasNextPage: hasNextPage && !showViewAllButton,
-    onLoadMore: () => {
-      fetchNextPage()
-    },
-  } as any)
 
   let volumeKey: ComponentPropsWithoutRef<
-    typeof TrendingCollectionsList
+    typeof CollectionRankingsTable
   >['volumeKey'] = 'allTime'
 
   switch (sortByTime) {
@@ -76,6 +66,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
 
   return (
     <Layout>
+      <Head />
       <Box
         css={{
           p: 24,
@@ -85,6 +76,27 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
           },
         }}
       >
+        {isDisconnected && (
+          <Flex
+            direction="column"
+            align="center"
+            css={{ mx: 'auto', maxWidth: 728, pt: '$5', textAlign: 'center' }}
+          >
+            <Text style="h3" css={{ mb: 24 }}>
+              Open Source Marketplace
+            </Text>
+            <Text style="body1" css={{ mb: 48 }}>
+              Reservoir Marketplace is an open-source project that showcases the
+              latest and greatest features of the Reservoir Platform.
+            </Text>
+            <a
+              href="https://github.com/reservoirprotocol/marketplace-v2"
+              target="_blank"
+            >
+              <Button color="gray3">View Source Code</Button>
+            </a>
+          </Flex>
+        )}
         <Flex css={{ my: '$6', gap: 65 }} direction="column">
           <Flex
             justify="between"
@@ -101,43 +113,37 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
             <Text style="h4" as="h4">
               Popular Collections
             </Text>
-            <TrendingCollectionsTimeToggle
-              compact={compactToggleNames && isMounted}
-              option={sortByTime}
-              onOptionSelected={(option) => {
-                setSortByTime(option)
-              }}
-            />
+            <Flex align="center" css={{ gap: '$4' }}>
+              <CollectionsTimeDropdown
+                compact={compactToggleNames && isMounted}
+                option={sortByTime}
+                onOptionSelected={(option) => {
+                  setSortByTime(option)
+                }}
+              />
+              <ChainToggle />
+            </Flex>
           </Flex>
           {isSSR || !isMounted ? null : (
-            <TrendingCollectionsList
+            <CollectionRankingsTable
               collections={collections}
-              loading={isValidating && showViewAllButton}
+              loading={isValidating}
               volumeKey={volumeKey}
             />
           )}
-          {(isFetchingPage || isValidating) && !showViewAllButton && (
-            <Flex align="center" justify="center" css={{ py: '$4' }}>
-              <LoadingSpinner />
-            </Flex>
-          )}
-          {showViewAllButton && (
-            <Button
-              disabled={isValidating}
-              onClick={() => {
-                fetchNextPage()
-              }}
-              css={{
-                minWidth: 224,
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-              size="large"
-            >
-              View All
-            </Button>
-          )}
-          {!showViewAllButton && <div ref={sentryRef}></div>}
+          <Box css={{ alignSelf: 'center' }}>
+            <Link href="/collection-rankings">
+              <Button
+                css={{
+                  minWidth: 224,
+                  justifyContent: 'center',
+                }}
+                size="large"
+              >
+                View All
+              </Button>
+            </Link>
+          </Box>
         </Flex>
         <Footer />
       </Box>
@@ -158,7 +164,8 @@ export const getStaticProps: GetStaticProps<{
     {
       sortBy: '1DayVolume',
       normalizeRoyalties: NORMALIZE_ROYALTIES,
-      limit: 12,
+      includeTopBid: true,
+      limit: 10,
     }
 
   if (COLLECTION_SET_ID) {

@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { COLLECTION_SET_ID, COMMUNITY } from 'pages/_app'
 import { PercentChange } from 'components/primitives/PercentChange'
+import { NAVBAR_HEIGHT } from 'components/navbar'
 
 type Props = {
   address: Address | undefined
@@ -37,9 +38,7 @@ export const CollectionsTable: FC<Props> = ({ address }) => {
     useState<CollectionsTableSortingOption>('1day')
 
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {
-    rootMargin: '0px 0px 300px 0px',
-  })
+  const loadMoreObserver = useIntersectionObserver(loadMoreRef, {})
 
   const collectionQuery: Parameters<typeof useUserCollections>['1'] = {
     includeTopBid: true,
@@ -112,12 +111,12 @@ export const CollectionsTable: FC<Props> = ({ address }) => {
   )
 }
 
-type OfferTableRowProps = {
+type CollectionTableRowProps = {
   collection: ReturnType<typeof useUserCollections>['data'][0]
   sortByTime: CollectionsTableSortingOption
 }
 
-const CollectionTableRow: FC<OfferTableRowProps> = ({
+const CollectionTableRow: FC<CollectionTableRowProps> = ({
   collection,
   sortByTime,
 }) => {
@@ -278,6 +277,9 @@ const TableHeading = () => (
       '@md': {
         display: 'grid',
         gridTemplateColumns: desktopTemplateColumns,
+        position: 'sticky',
+        top: NAVBAR_HEIGHT,
+        backgroundColor: '$neutralBg',
       },
     }}
   >
@@ -295,12 +297,12 @@ const TableHeading = () => (
         Volume
       </Text>
     </TableCell>
-    <TableCell>
+    <TableCell css={{ display: 'none', '@md': { display: 'grid' } }}>
       <Text style="subtitle3" color="subtle">
         Top Offer
       </Text>
     </TableCell>
-    <TableCell css={{ display: 'none', '@md': { display: 'grid' } }}>
+    <TableCell>
       <Text style="subtitle3" color="subtle">
         Floor Price
       </Text>

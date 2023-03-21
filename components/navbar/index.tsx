@@ -4,10 +4,10 @@ import GlobalSearch from './GlobalSearch'
 import { useRouter } from 'next/router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import NavItem from './NavItem'
 import ThemeSwitcher from './ThemeSwitcher'
-import ChainSwitcher from './ChainSwitcher'
 import HamburgerMenu from './HamburgerMenu'
 import MobileSearch from './MobileSearch'
 import { useTheme } from 'next-themes'
@@ -15,6 +15,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useMounted } from '../../hooks'
 import { useAccount } from 'wagmi'
 import { ProfileDropdown } from './ProfileDropdown'
+import CartButton from './CartButton'
 
 export const NAVBAR_HEIGHT = 81
 export const NAVBAR_HEIGHT_MOBILE = 77
@@ -59,16 +60,20 @@ const Navbar = () => {
         <Flex align="center">
           <Link href="/">
             <Box css={{ width: 34, cursor: 'pointer' }}>
-              <img src="/reservoirLogo.svg" style={{ width: '100%' }} />
+              <Image
+                src="/reservoirLogo.svg"
+                width={34}
+                height={39}
+                alt="Reservoir"
+              />
             </Box>
           </Link>
         </Flex>
       </Box>
       <Flex align="center" css={{ gap: '$3' }}>
-        <MobileSearch />
-        <ChainSwitcher />
-        <ThemeSwitcher />
-        <HamburgerMenu />
+        <MobileSearch key={`${router.asPath}-search`} />
+        <CartButton />
+        <HamburgerMenu key={`${router.asPath}-hamburger`} />
       </Flex>
     </Flex>
   ) : (
@@ -95,11 +100,18 @@ const Navbar = () => {
           <Link href="/">
             <Box css={{ width: 112, cursor: 'pointer' }}>
               {theme == 'dark' ? (
-                <img src="/reservoirMarketLogo.svg" style={{ width: '100%' }} />
+                <Image
+                  src="/reservoirMarketLogo.svg"
+                  width={112}
+                  height={36}
+                  alt="Reservoir"
+                />
               ) : (
-                <img
+                <Image
                   src="/reservoirMarketLogoLight.svg"
-                  style={{ width: '100%' }}
+                  width={112}
+                  height={36}
+                  alt="Reservoir"
                 />
               )}
             </Box>
@@ -113,8 +125,10 @@ const Navbar = () => {
             />
           </Box>
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
-            <Link href="/">
-              <NavItem active={router.pathname == '/'}>Explore</NavItem>
+            <Link href="/collection-rankings">
+              <NavItem active={router.pathname == '/collection-rankings'}>
+                Collections
+              </NavItem>
             </Link>
             <Link href="/portfolio">
               <NavItem active={router.pathname == '/portfolio'}>Sell</NavItem>
@@ -128,7 +142,7 @@ const Navbar = () => {
 
       <Flex css={{ gap: '$3' }} justify="end" align="center">
         <ThemeSwitcher />
-        <ChainSwitcher />
+        <CartButton />
         {isConnected ? (
           <ProfileDropdown />
         ) : (
